@@ -87,21 +87,19 @@ module.exports = env => {
       new webpack.DefinePlugin({
         'process.env.NODE_ENV' : JSON.stringify('production')
       })
-    ])
-  }
+      ]),
 
-  resolve: {
-    // If you're working on a multi-platform React Native app, web-specific
-    // module implementations should be written in files using the extension
-    // `.web.js`.
-    extensions: [ '.web.js', '.js' ],
-    alias: {
-      'react-native': path.resolve(__dirname, 'node_modules/react-native-web')
-    }
-  }
-};
-//console.log('---> ', process.env.NODE_ENV );
-
+      resolve: {
+        // If you're working on a multi-platform React Native app, web-specific
+        // module implementations should be written in files using the extension
+        // `.web.js`.
+        extensions: [ '.web.js', '.js' ],
+        alias: {
+          'react-native': path.resolve(__dirname, 'node_modules/react-native-web')
+        }
+      }
+    };
+    //c
 
   //export NODE_ENV=production
   // unset NODE_ENV
