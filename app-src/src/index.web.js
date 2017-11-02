@@ -9,19 +9,22 @@ import LoggingService from 's2s-logging-service';
 import Messages from './js/messages';
 
 import ReactNative, { View, Text, StyleSheet } from 'react-native';
-import MyComponent from './components/mycomponent';
+import AppMain from './components/appMain';
 
 import {doReceiveAuthData, doLoginFailure, doExpiredPassword,
   doShowAlert, doAppStatus, doProcessWSMessage} from './action-creators/index.js';
 
+
 // Create stylesheet
 const styles = StyleSheet.create({
   viewStyles: {
+    alignSelf: 'center',
     height: '400px',
-    width: '300px',
-    backgroundColor: 'pink',
+    width: '80vw',
     display: 'flex',
     flexDirection: 'column',
+    marginLeft: 'auto',
+    marginRight: 'auto',
     alignItems: 'center'
   },
   textStyles: {
@@ -155,10 +158,7 @@ window.theStore = store;
 ReactNative.render((
   <Provider store={store}>
     <View style={styles.viewStyles}>
-      <Text style={styles.textStyles}>
-        Hello Native World!!!
-      </Text>
-      <MyComponent />
+      <AppMain />
     </View>
   </Provider>
 ), document.getElementById('app'));
