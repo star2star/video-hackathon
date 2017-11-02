@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+body{
+  font-family: Avenir, arial, sans-serif;
+  border: 0;
+  margin: 0 0 0 0;
+  overflow: hidden;  // need this otherwise about 30px of whitespace and scroll bars are shown
+}
+</style>
+</head>
+<body>
+  <webview id='webview' style="width:100vw; height:100vh" preload='./inject.js' nodeintegration disablewebsecurity></webview>
+</body>
+</html>
+<script>
+const wv = document.getElementById('webview');
+
+// DEVELOPER'S NOTE: update urls here to point to the correct endpoint
+// setup url to render depending on what was provided
+let url = 'https://orion-cust.star2star.com/softphoneDesktop/';
+if (location.href.indexOf('env=dev') > -1){
+  url = 'http://localhost:8081';
+}else if (location.href.indexOf('env=test') > -1){
+  url = 'https://orion-cust.star2star.net/softphoneDesktop/';
+}
+
+wv.src = url;
+
+wv.addEventListener('dom-ready', () => {
+  if ( location.href.indexOf('debug') > -1){
+    wv.openDevTools({mode: "undocked"});
+  }
+})
+
+</script>

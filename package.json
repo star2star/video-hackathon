@@ -1,0 +1,16 @@
+{
+  "name": "star2star-native-web-starter-kit",
+  "version": "0.0.1",
+  "description": "Star2Star  Web Starter Kit ",
+  "main": "index.js",
+  "scripts": {
+  },
+  "keywords": [],
+  "author": "Tom Athens",
+  "companyName": "Star2Star Communications, LLC",
+  "license": "MIT",
+  "devDependencies": {
+  },
+  "dependencies": {
+  }
+}

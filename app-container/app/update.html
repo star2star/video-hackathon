@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+body{
+  font-family: Avenir, arial, sans-serif;
+  border: 0;
+  margin: 0 0 0 0;
+}
+</style>
+</head>
+<body>
+  <webview id='webview' style="width:100vw; height:100vh" preload='./inject.js' nodeintegration disablewebsecurity></webview>
+</body>
+</html>
+<script>
+const wv = document.getElementById('webview');
+
+// setup url to render depending on what was provided
+let url = 'https://orion-cust.star2star.com/softphoneDesktop/?update';
+if (location.href.indexOf('env=dev') > -1){
+  url = 'http://localhost:8080?update';
+}else if (location.href.indexOf('env=test') > -1){
+  url = 'https://orion-cust.star2star.net/softphoneDesktop/?update';
+}
+
+wv.src = url;
+
+wv.addEventListener('dom-ready', () => {
+  if ( location.href.indexOf('debug') > -1){
+    wv.openDevTools({mode: "undocked"});
+  }
+})
+
+</script>
