@@ -6,6 +6,7 @@ import React from 'react';
 import S2SBaseComponent from 's2s-base-class';
 import { View, Text, StyleSheet } from 'react-native';
 
+const otSDK = new OpenTokSDK(credentials);
 
 const propTypes = {
 
@@ -16,33 +17,34 @@ const defaultProps = {
 };
 
 const styles = StyleSheet.create({
-  myComponentContainerStyles: {
-    backgroundColor: 'gray',
-    width: '60%',
-    height: '60%'
-  },
-  headingStyles: {
-    width: '100%',
-    height: '48px',
-    backgroundColor: 'red'
-  },
-  textStyles: {
-    color: 'black',
-    fontSize: '12px'
-  }
+
 });
 
 
 class MyComponent extends S2SBaseComponent {
   constructor(props){
     super(props);
-    this.state = {};
+    this.state = {
+      session: null,
+      connected: false,
+      active: false,
+      publishers: null,
+      subscribers: null,
+      meta: null,
+      streamMap: null,
+      localPublisherId: null,
+      localAudioEnabled: true,
+      localVideoEnabled: true
+    };
     this.displayName = 'MyComponent';
 
   }
 
   componentDidMount() {
+    const session = otSDK.session;
+    otSDK.connect().then(() => this.setState({ session, connected: true }));
   }
+
 
   componentWillUnmount() {
   }
@@ -64,15 +66,9 @@ class MyComponent extends S2SBaseComponent {
 
   render(){
     return(
-        <View  className="myComponentContainer"
-            style={styles.myComponentContainerStyles}
-        >
-          <View className="myComponentHeader" style={styles.headingStyles}>
-            <Text className="myText" style={styles.textStyles}>
-              Imported component!!!!
-            </Text>
-          </View>
-        </View>
+      <view className="App">
+
+      </view>
       );
   }
 }
