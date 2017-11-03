@@ -1,8 +1,9 @@
 import React from 'react';
 import S2SBaseComponent from 's2s-base-class';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import { ThemeProvider } from 'styled-components';
+import Button from './button'
 
 /*
 NOTES:
@@ -84,8 +85,12 @@ class Header extends S2SBaseComponent {
         flex: 5
         justifyContent: center;
       `,
-      buttonStyles: styled.Button`
-      `
+      buttonStyles: {
+        buttonContainerStyles: styled.TouchableOpacity`  `,
+        buttonViewStyles: styled.View`  `,
+        buttonTextStyles: styled.Text`  `,
+        displayNoneStyles: styled.View`  `,
+      }
     };
     return styles[styleName];
   }
@@ -98,7 +103,6 @@ class Header extends S2SBaseComponent {
     const HeaderContainerView = this.getStyle('headerContainerStyles');
     const SecondaryContainerView = this.getStyle('secondaryContainerStyles');
     const HeaderText = this.getStyle('headerTextStyles');
-    const SettingsButton = this.getStyle('buttonStyles');
 
     const defaultTheme = {
       headerContainerBackgroundColor: '#005496',
@@ -117,10 +121,14 @@ class Header extends S2SBaseComponent {
             <HeaderText className="HeaderText">
               Video Hackathon
             </HeaderText>
-            <SettingsButton
-              title="SETTINGS"
-              onPress={this.toggleSettings}
-            />
+            <Button
+                cbOnButtonClick={this.toggleSettings}
+                compStyle = {this.getStyle('buttonStyles')}
+                buttonLabel="SETTINGS"
+                buttonCompanion = ''
+                showLabel
+                showCompanion = {false}
+              />
           </SecondaryContainerView>
         </HeaderContainerView>
       </ThemeProvider>
