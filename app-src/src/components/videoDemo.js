@@ -1,6 +1,5 @@
-// Simple app component that uses react native element (View/Text/StyleSheet)
-// TODO - styling with styled-components (for native), import and use s2s-components
-//    i.e. import Button from 's2s-button/native'
+//TODO style using style components
+//add more functionality and learn more about the API
 
 import React from 'react';
 import S2SBaseComponent from 's2s-base-class';
@@ -39,7 +38,7 @@ const styles = StyleSheet.create({
 });
 
 
-class MyComponent extends S2SBaseComponent {
+class VideoTest extends S2SBaseComponent {
   constructor(props){
     super(props);
     this.state = {
@@ -114,11 +113,16 @@ class MyComponent extends S2SBaseComponent {
 
   render(){
     return(
-      <View  style={{"height": "100%", "width":"100%"}} onClick={this.startCall} id="cameraPublisherContainer"  className="App-main">
-        Click
+      <View style={{ "height": "100%", "width":"100%"}}>
+        <View  style={{ "height": "100%", "width":"100%"}} id="cameraPublisherContainer">
+
+        </View>
+        <View style={{"color":"yellow"}} onClick={this.startCall}>
+          Click to open video
+        </View>
       </View>
       );
   }
 }
 
-export default MyComponent;
+export default VideoTest;
