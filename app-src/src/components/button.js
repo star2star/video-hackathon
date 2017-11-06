@@ -21,7 +21,8 @@ const propTypes = {
   buttonLabel: React.PropTypes.string,
   buttonCompanion: React.PropTypes.string,
   showLabel: React.PropTypes.bool,
-  showCompanion: React.PropTypes.bool
+  showCompanion: React.PropTypes.bool,
+  toolTipPosition: React.PropTypes.string
 };
 
 const defaultProps = {
@@ -29,7 +30,8 @@ const defaultProps = {
   buttonLabel: 'Button Example',
   buttonCompanion: '',
   showLabel: true,
-  showCompanion: true
+  showCompanion: true,
+  toolTipPosition: 'right'
 };
 
 //react natives style sheet
@@ -58,22 +60,47 @@ class Button extends S2SBaseComponent {
   getDefaultStyle(styleName) {
     const styles = {
       buttonContainerStyles: styled.TouchableOpacity`
-        background-color: ${this.props.compStyle && this.props.compStyle.buttonContainerStyles.backgroundColor ? this.props.compStyle.buttonContainerStyles.backgroundColor : 'lightBlue'};
+        background-color: ${
+          this.props.compStyle && this.props.compStyle.buttonContainerStyles.backgroundColor ?
+          this.props.compStyle.buttonContainerStyles.backgroundColor :
+          '#005496'
+        };
+        height: 40px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        padding: 0px 8px;
+        border-radius: 4px;
+        position: relative;
       `,
       buttonContainerHoverStyles: styled.TouchableOpacity`
-        background-color: purple;
+        background-color: #00213c;
+        height: 40px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        padding: 0px 8px;
+        border-radius: 4px;
       `,
       buttonViewStyles: styled.View`
         width: 100%;
         height: 48px;
-        background-color: red
+        background-color: #f8f9fa
       `,
       buttonTextStyles: styled.Text`
-        color: black;
-        fontSize: 12px
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1;
+        text-align: center;
+        color: #f8f9fa;
       `,
       displayNoneStyles: styled.View`
         display: none;
+      `,
+      displayToolTipStyles: styled.View`
+
       `,
     };
     return styles[styleName];
@@ -90,12 +117,14 @@ class Button extends S2SBaseComponent {
   render(){
     const setButtonViewStyle = this.props.showCompanion ? 'buttonViewStyles' : 'displayNoneStyles';
     const setButtonTextStyle = this.props.showLabel ? 'buttonTextStyles' : 'displayNoneStyles';
+    const setButtonHoverTextStyle = this.props.showLabel ? 'buttonTextStyles' : 'displayToolTipStyles';
 
+    const setButtonTextHover = this.state.hoverActive ? setButtonHoverTextStyle : setButtonTextStyle;
     const setButtonContainerHover = this.state.hoverActive ? 'buttonContainerHoverStyles' : 'buttonContainerStyles';
 
     const ButtonContainerView = this.getDefaultStyle(setButtonContainerHover);
     const ButtonView = this.getDefaultStyle(setButtonViewStyle);
-    const ButtonText = this.getDefaultStyle(setButtonTextStyle);
+    const ButtonText = this.getDefaultStyle(setButtonTextHover);
 
     console.log(this.props);
     //buttonCompanionItem needs to return an svg but that isn't supported

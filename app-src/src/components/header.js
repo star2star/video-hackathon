@@ -78,10 +78,7 @@ class Header extends S2SBaseComponent {
       `,
       menuButton: {
         buttonContainerStyles: {
-          backgroundColor: 'red'
-        },
-        buttonContainerHoverStyles: {
-          backgroundColor: 'pink'
+          //backgroundColor: 'pink'
         },
         buttonViewStyles: {},
         buttonTextStyles: {},

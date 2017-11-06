@@ -3,6 +3,7 @@ import S2SBaseComponent from 's2s-base-class';
 import { View, Text, StyleSheet } from 'react-native';
 import { ThemeProvider } from 'styled-components';
 import Header from './header';
+import List from './list';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -13,10 +14,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     width: '100%'
   },
-  headingStyles: {
+  bodyStyle: {
     display: 'flex',
     height: 'calc(100vh - 50px)',
-    flex: 1
+    flex: 1,
+    flexDirection: 'row'
   },
   textStyles: {}
 });
@@ -30,17 +32,11 @@ class AppMain extends S2SBaseComponent {
 
   }
 
-  componentDidMount() {
+  componentDidMount() {}
 
-  }
+  componentWillUnmount() {}
 
-  componentWillUnmount() {
-
-  }
-
-  handleDismissClick() {
-
-  }
+  handleDismissClick() {}
 
   getDefaultStyle(styleName) {
     const styles = {
@@ -62,7 +58,14 @@ class AppMain extends S2SBaseComponent {
               console.log('Temporary cbFunction to cbToggleSettings in AppMain.js');
             }}
           />
-          <View className="AppMainBody" style={styles.headingStyles}>
+          <View className="AppMainBody" style={styles.bodyStyle}>
+            <View>
+              <List
+                compStyle = {{}}
+                listData = {{}}
+                listItem = {{}}
+              />
+            </View>
             <Text>
               TODO Import child components
             </Text>
