@@ -76,9 +76,15 @@ class Header extends S2SBaseComponent {
         flex: 5
         justifyContent: center;
       `,
-      buttonContainerStyles: styled(Button)`
-        background-color: pink;
-      `,
+      menuButton: {
+        buttonContainerStyles: {
+          backgroundColor: 'pink'
+        },
+        buttonContainerHoverStyles: {},
+        buttonViewStyles: {},
+        buttonTextStyles: {},
+        displayNoneStyles: {},
+      },
 
     };
     return styles[styleName];
@@ -89,10 +95,6 @@ class Header extends S2SBaseComponent {
     const HeaderContainerView = this.getStyle('headerContainerStyles');
     const SecondaryContainerView = this.getStyle('secondaryContainerStyles');
     const HeaderText = this.getStyle('headerTextStyles');
-
-    const MenuButton = styled(Button)`
-      background-color: red;
-    `;
 
     const defaultTheme = {
       headerContainerBackgroundColor: '#005496',
@@ -106,10 +108,10 @@ class Header extends S2SBaseComponent {
             <HeaderText className="HeaderText">
               Video Hackathon
             </HeaderText>
-            <MenuButton
+            <Button
               className="buttonContainerStyles"
               cbOnButtonClick={this.toggleSettings}
-              compStyle={this.buttonContainerStyles}
+              compStyle={this.getStyle('menuButton')}
               buttonLabel="SETTINGS"
               buttonCompanion = ''
               showLabel

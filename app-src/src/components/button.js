@@ -58,7 +58,7 @@ class Button extends S2SBaseComponent {
   getDefaultStyle(styleName) {
     const styles = {
       buttonContainerStyles: styled.TouchableOpacity`
-        background-color: lightblue;
+        background-color: ${this.props.compStyle && this.props.compStyle.buttonContainerStyles.backgroundColor ? this.props.compStyle.buttonContainerStyles.backgroundColor : 'lightBlue'};
       `,
       buttonContainerHoverStyles: styled.TouchableOpacity`
         background-color: purple;
@@ -97,7 +97,7 @@ class Button extends S2SBaseComponent {
     const ButtonView = this.getDefaultStyle(setButtonViewStyle);
     const ButtonText = this.getDefaultStyle(setButtonTextStyle);
 
-    console.log(this.state);
+    console.log(this.props);
     //buttonCompanionItem needs to return an svg but that isn't supported
     return(
         <ButtonContainerView
