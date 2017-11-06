@@ -43,37 +43,17 @@ class Button extends S2SBaseComponent {
     this.state = {
       'hoverActive': false,
     };
-    this.displayName = 'MyComponent';
+    this.displayName = 'Button';
 
     this.ButtonElement;
+
+    this.setHoverTrue = this.setHoverTrue.bind(this);
+    this.setHoverFalse = this.setHoverFalse.bind(this);
   }
 
-  componentDidMount() {
-    // ComponentUtilities.hoverUtility(
-    //   this,
-    //   this.ButtonElement,
-    //   {'hoverActive': !this.state.hoverActive},
-    //   'add'
-    // );
-    console.log('Mounted');
-    // add(window, 'resize', this.lazyLoadHandler);
-    // add(eventNode, 'scroll', this.lazyLoadHandler);
-  }
+  componentDidMount() {}
 
-  componentWillUnmount() {
-    // ComponentUtilities.hoverUtility(
-    //   this,
-    //   this.ButtonElement,
-    //   {'hoverActive': !this.state.hoverActive},
-    //   'remove'
-    // );
-    console.log('will unmount');
-    // remove(window, 'resize', this.lazyLoadHandler);
-    // remove(eventNode, 'scroll', this.lazyLoadHandler);
-  }
-
-  handleDismissClick() {
-  }
+  componentWillUnmount() {}
 
   getDefaultStyle(styleName) {
     const styles = {
@@ -99,6 +79,13 @@ class Button extends S2SBaseComponent {
     return styles[styleName];
   }
 
+  setHoverTrue(){
+    ComponentUtilities.hoverUtility(this, true, {hoverActive: true});
+  }
+
+  setHoverFalse(){
+    ComponentUtilities.hoverUtility(this, false, {hoverActive: false});
+  }
 
   render(){
     const setButtonViewStyle = this.props.showCompanion ? 'buttonViewStyles' : 'displayNoneStyles';
@@ -111,7 +98,7 @@ class Button extends S2SBaseComponent {
     const ButtonText = this.getDefaultStyle(setButtonTextStyle);
 
     console.log(this.state);
-
+    //buttonCompanionItem needs to return an svg but that isn't supported
     return(
         <ButtonContainerView
             className="buttonContainer"
@@ -119,6 +106,8 @@ class Button extends S2SBaseComponent {
             accessibilityLabel = {this.props.buttonLabel}
             accessible
             onPress={this.props.cbOnButtonClick}
+            onMouseEnter = {this.setHoverTrue}
+            onMouseLeave = {this.setHoverFalse}
             ref = {(elm) => this.ButtonElement = elm}
           >
           <ButtonView className="buttonCompanionItem"/>
