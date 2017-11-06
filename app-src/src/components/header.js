@@ -11,15 +11,6 @@ NOTES:
 - React-Native button is basically uncustomizeable style-wise.
 */
 
-/*
-TODO:
-- Switch out buttons.
-
-
-
-*/
-
-
 const propTypes = {
   cbToggleSettings : React.PropTypes.func
 };
@@ -80,23 +71,18 @@ class Header extends S2SBaseComponent {
       `,
       headerTextStyles: styled.View`
         alignItems: center;
-        color: ${props => props.theme.headerTextColor};;
+        color: ${props => props.theme.headerTextColor};
         display: flex;
         flex: 5
         justifyContent: center;
       `,
-      buttonStyles: {
-        buttonContainerStyles: styled.TouchableOpacity`  `,
-        buttonViewStyles: styled.View`  `,
-        buttonTextStyles: styled.Text`  `,
-        displayNoneStyles: styled.View`  `,
-      }
+      buttonContainerStyles: styled(Button)`
+        background-color: pink;
+      `,
+
     };
     return styles[styleName];
   }
-
-
-
 
   render(){
 
@@ -104,13 +90,12 @@ class Header extends S2SBaseComponent {
     const SecondaryContainerView = this.getStyle('secondaryContainerStyles');
     const HeaderText = this.getStyle('headerTextStyles');
 
+    const MenuButton = styled(Button)`
+      background-color: red;
+    `;
+
     const defaultTheme = {
       headerContainerBackgroundColor: '#005496',
-      headerTextColor: '#faf8f9'
-    }
-
-    const darkTheme = {
-      headerContainerBackgroundColor: '#343a40',
       headerTextColor: '#faf8f9'
     }
 
@@ -121,14 +106,15 @@ class Header extends S2SBaseComponent {
             <HeaderText className="HeaderText">
               Video Hackathon
             </HeaderText>
-            <Button
-                cbOnButtonClick={this.toggleSettings}
-                compStyle = {this.getStyle('buttonStyles')}
-                buttonLabel="SETTINGS"
-                buttonCompanion = ''
-                showLabel
-                showCompanion = {false}
-              />
+            <MenuButton
+              className="buttonContainerStyles"
+              cbOnButtonClick={this.toggleSettings}
+              compStyle={this.buttonContainerStyles}
+              buttonLabel="SETTINGS"
+              buttonCompanion = ''
+              showLabel
+              showCompanion = {false}
+            />
           </SecondaryContainerView>
         </HeaderContainerView>
       </ThemeProvider>
