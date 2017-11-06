@@ -8,6 +8,7 @@ import List from './list';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { compose } from 'recompose';
+import ChatPanel from './chatPanel';
 
 const styles = StyleSheet.create({
   myComponentContainerStyles: {
@@ -19,7 +20,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     height: 'calc(100vh - 50px)',
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   textStyles: {}
 });
@@ -99,6 +101,7 @@ class AppMain extends S2SBaseComponent {
             <Text>
               TODO Import child components
             </Text>
+            <ChatPanel isDisplayed={true} />
           </View>
         </View>
       );

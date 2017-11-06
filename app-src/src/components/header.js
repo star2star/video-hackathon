@@ -9,6 +9,8 @@ import Button from './button'
 NOTES:
 - Using react-native Button component until button ready.
 - React-Native button is basically uncustomizeable style-wise.
+- s2s-base-class getCompStyle/getStyle is not working fully could be due to styled-components being strings and react styles being objects
+- TODO theming
 */
 
 const propTypes = {
