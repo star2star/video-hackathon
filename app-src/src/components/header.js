@@ -56,9 +56,9 @@ class Header extends S2SBaseComponent {
         align-items: center;
         background-color: ${props => props.theme.headerContainerBackgroundColor};;
         display: flex;
-        flexDirection: row;
+        flex-direction: row;
         height: 50px;
-        justifyContent: flex-end;
+        justify-content: flex-end;
         width: 100%;
         padding-left: 10px;
         padding-right: 10px;
@@ -66,21 +66,23 @@ class Header extends S2SBaseComponent {
       secondaryContainerStyles: styled.View`
         display: flex;
         flex: 5;
-        flexDirection: row;
-        justifyContent: space-between;
+        flex-direction: row; // NOTE: Even though in the web, you can define 'display: flex' and the flex direction will be row by default, in react-native-web it has to be explicitly defined or it will not work.
+        justify-content: space-between;
       `,
       headerTextStyles: styled.View`
-        alignItems: center;
+        align-items: center;
         color: ${props => props.theme.headerTextColor};
         display: flex;
         flex: 5
-        justifyContent: center;
+        justify-content: center;
       `,
       menuButton: {
         buttonContainerStyles: {
+          backgroundColor: 'red'
+        },
+        buttonContainerHoverStyles: {
           backgroundColor: 'pink'
         },
-        buttonContainerHoverStyles: {},
         buttonViewStyles: {},
         buttonTextStyles: {},
         displayNoneStyles: {},
