@@ -1,8 +1,9 @@
 import React from 'react';
 import S2SBaseComponent from 's2s-base-class';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
 import styled from 'styled-components/native';
 import { ThemeProvider } from 'styled-components';
+import List from './list'
 
 /*
 NOTES:
@@ -26,10 +27,12 @@ class ChatPanel extends S2SBaseComponent {
   constructor(props){
     super(props);
     this.state = {
-      isDisplayed : this.props.isDisplayed
+      //isDisplayed : this.props.isDisplayed
     };
     this.displayName = 'ChatPanel';
 
+    this.springValue = new Animated.Value(0.3);
+    this.spring = this.spring.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
@@ -40,18 +43,14 @@ class ChatPanel extends S2SBaseComponent {
     }
   }
 
-  componentDidMount() {
-
-  }
+  componentDidMount() {}
 
   componentWillUnmount() {
 
-  }
-
-  handleDismissClick() {
 
   }
 
+  handleDismissClick() {}
 
   getDefaultStyle(styleName) {
     const styles = {
@@ -81,6 +80,18 @@ class ChatPanel extends S2SBaseComponent {
     return styles[styleName];
   }
 
+  spring() {
+    this.springValue.setValue(0.3);
+    Animated.spring(
+      this.springValue,
+      {
+        toValue: 250,
+        friction: 5,
+        tension: 1
+      }
+    ).start()
+  }
+
   render(){
 
     const ContainerView = this.getStyle('containerStyles');
@@ -92,15 +103,28 @@ class ChatPanel extends S2SBaseComponent {
       headerTextColor: '#faf8f9'
     }
 
+    const AnimatedView = Animated.createAnimatedComponent(ContainerView);
+    //console.log('ChatPanel props:',this.props)
+
     return(
       <ThemeProvider theme={defaultTheme}>
-        <ContainerView>
-        <ChatPanelHeader  className="HeaderContainer" >
-          <ChatPanelText>
-            Chat
-          </ChatPanelText>
-        </ChatPanelHeader>
-        </ContainerView>
+      {this.props.isDisplayed === true ?
+        (
+        <AnimatedView
+          onLayout={()=>{
+            this.spring();
+          }}
+          style={{width: this.springValue}}
+        >
+          <ChatPanelHeader  className="HeaderContainer" >
+            <ChatPanelText>
+              Chat
+            </ChatPanelText>
+          </ChatPanelHeader>
+        </AnimatedView>
+        ) :
+        <View></View>
+      }
       </ThemeProvider>
     );
   }

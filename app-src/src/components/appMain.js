@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 import ChatPanel from './chatPanel';
+import Button from './button';
 
 const styles = StyleSheet.create({
   myComponentContainerStyles: {
@@ -30,7 +31,9 @@ const styles = StyleSheet.create({
 class AppMain extends S2SBaseComponent {
   constructor(props){
     super(props);
-    this.state = {};
+    this.state = {
+      chatPanelOpen : false
+    };
     this.displayName = 'AppMain';
 
     this.menuButtonArray = this.menuButtonArray.bind(this);
@@ -85,6 +88,8 @@ class AppMain extends S2SBaseComponent {
 
   render(){
 
+    //console.log('state', this.state)
+
     return(
         <View  className="AppMainContainer"
             style={styles.myComponentContainerStyles}
@@ -108,7 +113,15 @@ class AppMain extends S2SBaseComponent {
             <Text>
               TODO Import child components
             </Text>
-            <ChatPanel isDisplayed />
+            <Button
+                buttonLabel="Temporary Button to Toggle Chat"
+                cbOnButtonClick={()=>{
+                  this.setState((prevState)=>{
+                    return {...prevState, chatPanelOpen : !this.state.chatPanelOpen };
+                  });
+                }}
+            />
+            <ChatPanel isDisplayed={this.state.chatPanelOpen} />
           </View>
         </View>
       );

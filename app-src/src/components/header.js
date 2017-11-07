@@ -65,12 +65,6 @@ class Header extends S2SBaseComponent {
         padding-left: 10px;
         padding-right: 10px;
       `,
-      secondaryContainerStyles: styled.View`
-        display: flex;
-        flex: 5;
-        flex-direction: row; // NOTE: Even though in the web, you can define 'display: flex' and the flex direction will be row by default, in react-native-web it has to be explicitly defined or it will not work.
-        justify-content: space-between;
-      `,
       headerTextStyles: styled.View`
         align-items: center;
         color: ${props => props.theme.headerTextColor};
@@ -80,7 +74,10 @@ class Header extends S2SBaseComponent {
       `,
       menuButton: {
         buttonContainerStyles: {
-          //backgroundColor: 'pink'
+          backgroundColor: 'red'
+        },
+        buttonContainerHoverStyles: {
+          backgroundColor: 'pink'
         },
         buttonViewStyles: {},
         buttonTextStyles: {},
@@ -94,7 +91,6 @@ class Header extends S2SBaseComponent {
   render(){
 
     const HeaderContainerView = this.getStyle('headerContainerStyles');
-    const SecondaryContainerView = this.getStyle('secondaryContainerStyles');
     const HeaderText = this.getStyle('headerTextStyles');
 
     const defaultTheme = {
@@ -105,20 +101,18 @@ class Header extends S2SBaseComponent {
     return(
       <ThemeProvider theme={defaultTheme}>
         <HeaderContainerView  className="HeaderContainer" >
-          <SecondaryContainerView>
-            <HeaderText className="HeaderText">
-              Video Hackathon
-            </HeaderText>
-            <Button
-              className="buttonContainerStyles"
-              cbOnButtonClick={this.toggleSettings}
-              compStyle={this.getStyle('menuButton')}
-              buttonLabel="SETTINGS"
-              buttonCompanion = ''
-              showLabel
-              showCompanion = {false}
-            />
-          </SecondaryContainerView>
+          <HeaderText className="HeaderText">
+            Video Hackathon
+          </HeaderText>
+          <Button
+            className="buttonContainerStyles"
+            cbOnButtonClick={this.toggleSettings}
+            compStyle={this.getStyle('menuButton')}
+            buttonLabel="SETTINGS"
+            buttonCompanion = ''
+            showLabel
+            showCompanion = {false}
+          />
         </HeaderContainerView>
       </ThemeProvider>
       );
