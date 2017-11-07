@@ -42,8 +42,9 @@ class List extends S2SBaseComponent {
     super(props);
 
     this.displayName = 'List';
-
     this.ButtonElement;
+
+    this.renderItem = this.renderItem.bind(this);
   }
 
   componentDidMount() {}
@@ -73,6 +74,13 @@ class List extends S2SBaseComponent {
     return styles[styleName];
   }
 
+  renderItem(listData){
+    console.log('RENDERITEM ARG', listData)
+
+    return listData.map((wat)=>{
+      return this.props.listItem(wat);
+    });
+  }
 
   render(){
     const ListContainerView = this.getDefaultStyle('listContainerStyles');
@@ -81,13 +89,12 @@ class List extends S2SBaseComponent {
 
     const ListToDisplay = this.props.hasSections ? 'SectionList' : 'FlatList';
 
-    console.log(this.props);
     //buttonCompanionItem needs to return an svg but that isn't supported
     return(
       <ListContainerView>
         <ListToDisplay
             data = {this.props.listData}
-            renderItem = {this.props.listItem}
+            renderItem = {this.renderItem(this.props.listData)}
             renderSectionHeader = {this.props.renderSectionHeader}
             sections = {this.props.sections}
         />

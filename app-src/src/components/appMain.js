@@ -1,6 +1,6 @@
 import React from 'react';
 import S2SBaseComponent from 's2s-base-class';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet,FlatList } from 'react-native';
 import { ThemeProvider } from 'styled-components';
 import MenuListItem from './menuListItem';
 import Header from './header';
@@ -52,6 +52,7 @@ class AppMain extends S2SBaseComponent {
   }
 
   menuButtonArray(){
+
     return [
       {
         label: 'Make Call',
@@ -66,11 +67,15 @@ class AppMain extends S2SBaseComponent {
     ];
   }
 
-  itemToRender({item}){
+  itemToRender(item){
+    console.log('ITEMTORENDER ARG', item)
+
     return (
       <MenuListItem
-          cbOnClick = {()=>{console.log('ITEM Click', item);}}
-          compStyle = {{}}
+          key={item.companion}
+          cbOnClick = {()=>{
+            console.log('ITEM Click', item);
+          }}
           menuListItemLabel = {item.label}
           menuListItemCompanion = {item.companion}
           showCompanion
@@ -80,7 +85,6 @@ class AppMain extends S2SBaseComponent {
 
   render(){
 
-//MenuListItem
     return(
         <View  className="AppMainContainer"
             style={styles.myComponentContainerStyles}
@@ -95,7 +99,10 @@ class AppMain extends S2SBaseComponent {
               <List
                 compStyle = {{}}
                 listData = {this.menuButtonArray()}
-                listItem = {(item)=>{this.itemToRender(item)}}
+                listItem = {(item)=>{
+                  console.log("APPMAIN LISTITEM ARG", item);
+                  this.itemToRender(item);
+                }}
               />
             </View>
             <Text>
