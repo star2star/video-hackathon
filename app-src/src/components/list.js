@@ -82,6 +82,14 @@ class List extends S2SBaseComponent {
     });
   }
 
+  renderItem(listData){
+    console.log('RENDERITEM ARG', listData)
+
+    return listData.map((wat)=>{
+      return this.props.listItem(wat);
+    });
+  }
+
   render(){
     const ListContainerView = this.getDefaultStyle('listContainerStyles');
     const StyledFlatList = this.getDefaultStyle('flatListStyle');

@@ -126,7 +126,6 @@ class Button extends S2SBaseComponent {
     const ButtonView = this.getDefaultStyle(setButtonViewStyle);
     const ButtonText = this.getDefaultStyle(setButtonTextHover);
 
-    console.log(this.props);
     //buttonCompanionItem needs to return an svg but that isn't supported
     return(
         <ButtonContainerView

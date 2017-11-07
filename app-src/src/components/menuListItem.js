@@ -58,6 +58,7 @@ class MenuListItem extends S2SBaseComponent {
       menuListItemContainerStyles: styled.TouchableOpacity`
         background-color: #f8f9fa;
         height: 40px;
+        width: 48px;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -70,6 +71,7 @@ class MenuListItem extends S2SBaseComponent {
       menuListItemContainerHoverStyles: styled.TouchableOpacity`
         background-color: #e9ecef;
         height: 40px;
+        width: 48px;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -82,6 +84,7 @@ class MenuListItem extends S2SBaseComponent {
       menuListItemContainerActiveStyles: styled.TouchableOpacity`
         background-color: #f8f9fa;
         height: 40px;
+        width: 48px;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -131,7 +134,7 @@ class MenuListItem extends S2SBaseComponent {
     const MenuListItemView = this.getDefaultStyle(setMenuListItemCompanionDisabledStyle);
     const MenuListItemText = this.getDefaultStyle(setMenuListItemHoverTextStyle);
 
-    console.log(this.props);
+    console.log('MENU LIST ITEM', this.props);
     //menuListItemCompanionItem needs to return an svg but that isn't supported
     return(
         <MenuListItemContainerView

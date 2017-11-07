@@ -97,18 +97,18 @@ class AppMain extends S2SBaseComponent {
           <View className="AppMainBody" style={styles.bodyStyle}>
             <View>
               <List
-                compStyle = {{}}
-                listData = {this.menuButtonArray()}
-                listItem = {(item)=>{
-                  console.log("APPMAIN LISTITEM ARG", item);
-                  this.itemToRender(item);
-                }}
-              />
+                  compStyle = {{}}
+                  listData = {this.menuButtonArray()}
+                  listItem = {(item)=>{
+                    console.log("APPMAIN LISTITEM ARG", item);
+                    this.itemToRender(item);
+                  }}
+                />
             </View>
             <Text>
               TODO Import child components
             </Text>
-            <ChatPanel isDisplayed={true} />
+            <ChatPanel isDisplayed />
           </View>
         </View>
       );
