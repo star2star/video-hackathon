@@ -27,11 +27,10 @@ class ChatPanel extends S2SBaseComponent {
   constructor(props){
     super(props);
     this.state = {
-      //isDisplayed : this.props.isDisplayed
     };
     this.displayName = 'ChatPanel';
 
-    this.springValue = new Animated.Value(0.3);
+    this.springValue = new Animated.Value(0);
     this.spring = this.spring.bind(this);
   }
 
@@ -45,10 +44,7 @@ class ChatPanel extends S2SBaseComponent {
 
   componentDidMount() {}
 
-  componentWillUnmount() {
-
-
-  }
+  componentWillUnmount() {}
 
   handleDismissClick() {}
 
@@ -81,15 +77,36 @@ class ChatPanel extends S2SBaseComponent {
   }
 
   spring() {
-    this.springValue.setValue(0.3);
-    Animated.spring(
-      this.springValue,
-      {
-        toValue: 250,
-        friction: 5,
-        tension: 1
-      }
-    ).start()
+    /* TODO:
+      Clean up code -- so many duplicates
+      Hide "Chat" Text when not displayed
+      No animating on initial render -- use a different event handler?
+    */
+
+    if(this.props.isDisplayed === true) {
+      this.springValue.setValue(1);
+      Animated.spring(
+        this.springValue,
+        {
+          toValue: 250,
+          friction: 5,
+          tension: 1
+        }
+      ).start()
+
+    } else {
+      this.springValue.setValue(250); // This is what is motioning chat panel when it closes, but it has a side affect of motioning on initial render which is NOT my favorite.
+
+      Animated.spring(
+        this.springValue,
+        {
+          toValue: 0,
+          friction: 5,
+          tension: 1
+        }
+      ).start()
+    }
+
   }
 
   render(){
@@ -108,8 +125,6 @@ class ChatPanel extends S2SBaseComponent {
 
     return(
       <ThemeProvider theme={defaultTheme}>
-      {this.props.isDisplayed === true ?
-        (
         <AnimatedView
           onLayout={()=>{
             this.spring();
@@ -122,9 +137,6 @@ class ChatPanel extends S2SBaseComponent {
             </ChatPanelText>
           </ChatPanelHeader>
         </AnimatedView>
-        ) :
-        <View></View>
-      }
       </ThemeProvider>
     );
   }
