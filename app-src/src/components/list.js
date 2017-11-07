@@ -53,18 +53,14 @@ class List extends S2SBaseComponent {
   getDefaultStyle(styleName) {
     const styles = {
       listContainerStyles: styled.View`
-        background-color: ${
-          this.props.compStyle && this.props.compStyle.buttonContainerStyles.backgroundColor ?
-          this.props.compStyle.buttonContainerStyles.backgroundColor :
-          '#f8f9fa'
-        };
+        background-color: #f8f9fa;
         height: 100%;
         width: 48px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 0px 8px;
+        padding: 0px;
         border-right: #dee2e6;
       `,
       flatListStyle: styled.FlatList`
@@ -83,7 +79,7 @@ class List extends S2SBaseComponent {
     const StyledFlatList = this.getDefaultStyle('flatListStyle');
     const StyledSectionList = this.getDefaultStyle('sectionListStyle');
 
-    const ListToDisplay = this.props.hasSections ? StyledFlatList : StyledSectionList;
+    const ListToDisplay = this.props.hasSections ? 'SectionList' : 'FlatList';
 
     console.log(this.props);
     //buttonCompanionItem needs to return an svg but that isn't supported

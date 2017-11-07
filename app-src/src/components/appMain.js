@@ -2,6 +2,7 @@ import React from 'react';
 import S2SBaseComponent from 's2s-base-class';
 import { View, Text, StyleSheet } from 'react-native';
 import { ThemeProvider } from 'styled-components';
+import MenuListItem from './menuListItem';
 import Header from './header';
 import List from './list';
 import { connect } from 'react-redux';
@@ -30,6 +31,8 @@ class AppMain extends S2SBaseComponent {
     this.state = {};
     this.displayName = 'AppMain';
 
+    this.menuButtonArray = this.menuButtonArray.bind(this);
+    this.itemToRender = this.itemToRender.bind(this);
   }
 
   componentDidMount() {}
@@ -46,9 +49,36 @@ class AppMain extends S2SBaseComponent {
     return styles[styleName];
   }
 
+  menuButtonArray(){
+    return [
+      {
+        label: 'Make Call',
+        companion: '*',
+        isDisabled: false
+      },
+      {
+        label: 'Share Screen',
+        companion: '[]',
+        isDisabled: true
+      }
+    ];
+  }
+
+  itemToRender({item}){
+    return (
+      <MenuListItem
+          cbOnClick = {()=>{console.log('ITEM Click', item);}}
+          compStyle = {{}}
+          menuListItemLabel = {item.label}
+          menuListItemCompanion = {item.companion}
+          showCompanion
+      />
+    );
+  }
+
   render(){
 
-
+//MenuListItem
     return(
         <View  className="AppMainContainer"
             style={styles.myComponentContainerStyles}
@@ -62,8 +92,8 @@ class AppMain extends S2SBaseComponent {
             <View>
               <List
                 compStyle = {{}}
-                listData = {{}}
-                listItem = {{}}
+                listData = {this.menuButtonArray()}
+                listItem = {(item)=>{this.itemToRender(item)}}
               />
             </View>
             <Text>
