@@ -68,7 +68,7 @@ class AppMain extends S2SBaseComponent {
   }
 
   itemToRender(item){
-    console.log('ITEMTORENDER ARG', item)
+    //console.log('ITEMTORENDER ARG', item)
 
     return (
       <MenuListItem
@@ -100,8 +100,8 @@ class AppMain extends S2SBaseComponent {
                   compStyle = {{}}
                   listData = {this.menuButtonArray()}
                   listItem = {(item)=>{
-                    console.log("APPMAIN LISTITEM ARG", item);
-                    this.itemToRender(item);
+                    //console.log("APPMAIN LISTITEM ARG", item);
+                    return this.itemToRender(item);
                   }}
                 />
             </View>

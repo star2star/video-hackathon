@@ -75,18 +75,10 @@ class List extends S2SBaseComponent {
   }
 
   renderItem(listData){
-    console.log('RENDERITEM ARG', listData)
+    //console.log('RENDERITEM ARG', listData)
 
-    return listData.map((wat)=>{
-      return this.props.listItem(wat);
-    });
-  }
-
-  renderItem(listData){
-    console.log('RENDERITEM ARG', listData)
-
-    return listData.map((wat)=>{
-      return this.props.listItem(wat);
+    return listData.map((listItem)=>{
+      return this.props.listItem(listItem);
     });
   }
 
