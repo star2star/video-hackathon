@@ -2,24 +2,54 @@ import React from 'react';
 import S2SBaseComponent from 's2s-base-class';
 import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
 import styled from 'styled-components/native';
-import { ThemeProvider } from 'styled-components';
+import { withTheme } from 'styled-components';
 import List from './list'
+import ChatItem from './chatItem';
+import Button from './button';
 
 /*
 NOTES:
-- Using react-native Button component until button ready.
-- React-Native button is basically uncustomizeable style-wise.
 - s2s-base-class getCompStyle/getStyle is not working fully could be due to styled-components being strings and react styles being objects
 - TODO theming
-- TODO Add Props for child chat components.
 */
 
-const propTypes = {
-  isDisplayed : React.PropTypes.func
-};
+// Temporary Data until the Chat API is configured
+const chatProps = [
+  {
+    message: "Such video quality. Wow. Much impress.",
+    user: {
+      firstname: 'doge',
+      lastname: 'dog',
+      email: 'doge@gmail.come'
+    },
+    timestamp: Date.now(),
+    isMe: false
+  },
+  {
+    message: "I hate it.",
+    user: {
+      firstname: 'grumpy',
+      lastname: 'cat',
+      email: 'grumpycat@gmail.come'
+    },
+    timestamp: Date.now(),
+    isMe: true
+  },
+  {
+    message: "What if I told you nobody wanted to video chat with you.",
+    user: {
+      firstname: 'morpheus',
+      lastname: 'matrix',
+      email: 'morpheus@gmail.come'
+    },
+    timestamp: Date.now(),
+    isMe: false
+  }
+]
 
 const defaultProps = {
   cbToggleSettings : ()=>{ console.log('Please define a callback function for cbToggleSettings. Thanks.'); },
+  chatList : chatProps,
   isDisplayed : false
 };
 
@@ -27,27 +57,40 @@ class ChatPanel extends S2SBaseComponent {
   constructor(props){
     super(props);
     this.state = {
+      isDisplayed: this.props.isDisplayed
     };
     this.displayName = 'ChatPanel';
 
     this.springValue = new Animated.Value(0);
     this.spring = this.spring.bind(this);
+    this.closePanel = this.closePanel.bind(this);
+  }
+
+  static propTypes = {
+    chatList : React.PropTypes.array,
+    isDisplayed : React.PropTypes.func
+  }
+
+  static defaultProps = {
+    cbToggleSettings : ()=>{ console.log('Please define a callback function for cbToggleSettings. Thanks.'); },
+    chatList : chatProps, // NOTE: Should actually be an empty array but I'm faking out data
+    isDisplayed : false
   }
 
   componentWillReceiveProps(nextProps){
-    if(nextProps && nextProps.displayState !== this.props.displayState) {
+    if(nextProps && nextProps.isDisplayed !== this.props.isDisplayed) {
       this.setState((prevState)=>{
-        return {...prevState, displayState : nextProps.displayState};
+        return {...prevState, isDisplayed : nextProps.isDisplayed};
       });
     }
   }
 
   componentDidMount() {}
 
-  componentDidUpdate() {
-
-    // TODO fix so spring is only fired when isDisplayed changes! Other props may change in the future
-    this.spring();
+  componentDidUpdate(prevProps,prevState) {
+    if(prevProps.isDisplayed !== this.props.isDisplayed) {
+      this.spring();
+    }
   }
 
   componentWillUnmount() {}
@@ -61,32 +104,35 @@ class ChatPanel extends S2SBaseComponent {
         display: flex;
         flex-direction: column;
         width: 30%;
-
       `,
       chatPanelHeaderStyles: styled.View`
         align-items: center;
         background-color: #1878c7;
         color: #faf8f9;
-        display: flex;
-        flex-direction: column;
+        display: ${this.state.isDisplayed && this.state.isDisplayed === true ? 'flex' : 'none'}; // NOTE: This ternerary is here to prevent the "Chat" text from being visible while Chat is collapsed.
+        flex-direction: row;
         height: 5%;
-        vertical-align: center;
+        justify-content: space-between;
       `,
       chatPanelTextStyles: styled.Text`
-        align-items: center;
-        display: flex
-        flex-direction: row;
+        display: flex;
+        flex: 5;
         justify-content: center;
+      `,
+
+      // TODO We can't override styles
+      chatPanelButtonStyles: styled.Button`
+        align-items: center;
+        justify-content: center;
+      `,
+      messageLisViewStyles: styled.View`
+        display: ${this.state.isDisplayed && this.state.isDisplayed === true ? 'flex' : 'none'}; // NOTE: This ternerary is here to prevent the "Chat" text from being visible while Chat is collapsed.
       `,
     };
     return styles[styleName];
   }
 
   spring() {
-    /* TODO:
-      Hide "Chat" Text when not displayed
-    */
-
     // Default Configs: isDisplayed true // show chatPanel is open/opening
     this.springValue.setValue(1);
     let animationConfigs = {
@@ -96,7 +142,7 @@ class ChatPanel extends S2SBaseComponent {
     }
 
     // isDisplayed false // chatPanel is closed or closing
-    if(this.props.isDisplayed === false) {
+    if(this.state.isDisplayed === false) {
       this.springValue.setValue(250);
 
       animationConfigs = {
@@ -106,10 +152,33 @@ class ChatPanel extends S2SBaseComponent {
       }
     }
 
+    // Performing animation with updated configurations
     Animated.spring(
       this.springValue,
       animationConfigs
     ).start();
+
+  }
+
+  createMessageList(){
+    return this.props.chatList && this.props.chatList.map((message)=>{
+      return (
+        <ChatItem
+          user={message.user}
+          timestamp={message.timestamp}
+          isMe={message.isMe}
+          message={message.message}
+        />
+      )
+    })
+  }
+
+  closePanel(){
+    // TODO make close
+
+    this.setState((prevState)=>{
+      return {...prevState, isDisplayed : false }
+    });
 
   }
 
@@ -118,6 +187,8 @@ class ChatPanel extends S2SBaseComponent {
     const ContainerView = this.getStyle('containerStyles');
     const ChatPanelHeader = this.getStyle('chatPanelHeaderStyles');
     const ChatPanelText = this.getStyle('chatPanelTextStyles');
+    const MessageListView = this.getStyle('messageLisViewStyles');
+    const ChatPanelButton = this.getStyle('chatPanelButtonStyles');
 
     const defaultTheme = {
       headerContainerBackgroundColor: '#005496',
@@ -128,19 +199,22 @@ class ChatPanel extends S2SBaseComponent {
     //console.log('ChatPanel props:',this.props)
 
     return(
-      <ThemeProvider theme={defaultTheme}>
-        <AnimatedView
-          style={{width: this.springValue}}
-        >
+        <AnimatedView style={{  width: this.springValue}} >
           <ChatPanelHeader  className="HeaderContainer" >
             <ChatPanelText>
               Chat
             </ChatPanelText>
+            <Button
+              buttonLabel="X"
+              cbOnButtonClick={this.closePanel}
+            />
           </ChatPanelHeader>
+          <MessageListView>
+            {this.createMessageList()}
+          </MessageListView>
         </AnimatedView>
-      </ThemeProvider>
     );
   }
 }
 
-export default ChatPanel;
+export default withTheme(ChatPanel);
