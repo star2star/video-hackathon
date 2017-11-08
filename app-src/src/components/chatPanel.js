@@ -44,6 +44,12 @@ class ChatPanel extends S2SBaseComponent {
 
   componentDidMount() {}
 
+  componentDidUpdate() {
+
+    // TODO fix so spring is only fired when isDisplayed changes! Other props may change in the future
+    this.spring();
+  }
+
   componentWillUnmount() {}
 
   handleDismissClick() {}
@@ -68,7 +74,7 @@ class ChatPanel extends S2SBaseComponent {
       `,
       chatPanelTextStyles: styled.Text`
         align-items: center;
-        display: flex;
+        display: flex
         flex-direction: row;
         justify-content: center;
       `,
@@ -78,34 +84,32 @@ class ChatPanel extends S2SBaseComponent {
 
   spring() {
     /* TODO:
-      Clean up code -- so many duplicates
       Hide "Chat" Text when not displayed
-      No animating on initial render -- use a different event handler?
     */
 
-    if(this.props.isDisplayed === true) {
-      this.springValue.setValue(1);
-      Animated.spring(
-        this.springValue,
-        {
-          toValue: 250,
-          friction: 5,
-          tension: 1
-        }
-      ).start()
-
-    } else {
-      this.springValue.setValue(250); // This is what is motioning chat panel when it closes, but it has a side affect of motioning on initial render which is NOT my favorite.
-
-      Animated.spring(
-        this.springValue,
-        {
-          toValue: 0,
-          friction: 5,
-          tension: 1
-        }
-      ).start()
+    // Default Configs: isDisplayed true // show chatPanel is open/opening
+    this.springValue.setValue(1);
+    let animationConfigs = {
+      toValue: 250,
+      friction: 5,
+      tension: 1
     }
+
+    // isDisplayed false // chatPanel is closed or closing
+    if(this.props.isDisplayed === false) {
+      this.springValue.setValue(250);
+
+      animationConfigs = {
+        toValue: 0,
+        friction: 5,
+        tension: 1
+      }
+    }
+
+    Animated.spring(
+      this.springValue,
+      animationConfigs
+    ).start();
 
   }
 
@@ -126,9 +130,6 @@ class ChatPanel extends S2SBaseComponent {
     return(
       <ThemeProvider theme={defaultTheme}>
         <AnimatedView
-          onLayout={()=>{
-            this.spring();
-          }}
           style={{width: this.springValue}}
         >
           <ChatPanelHeader  className="HeaderContainer" >
