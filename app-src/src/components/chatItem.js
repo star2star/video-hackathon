@@ -42,7 +42,7 @@ class ChatItem extends S2SBaseComponent {
       flex-direction: column;
       justify-content: flex-end;
       //width: 100%;
-      width: 230px;
+      width: 210px;
     `;
     const MessageContainer = styled.View`
       align-items: flex-end;
@@ -60,8 +60,8 @@ class ChatItem extends S2SBaseComponent {
       border-top: 8px solid transparent;
       border-bottom: 8px solid transparent;
       border-left: ${this.props.isMe && this.props.isMe === true ? '12px solid #862e9c' : '12px solid #2b8a3e'};
-      left: ${this.props.isMe && this.props.isMe === true ? '184px' : '-12px'};
-      top: 50px;
+      left: ${this.props.isMe && this.props.isMe === true ? '168px' : '-12px'};
+      bottom: 10px;
       transform: ${this.props.isMe && this.props.isMe === true ? 'rotate(0deg)' : 'rotate(180deg)'};
       width: 0;
       height: 0;
@@ -69,6 +69,7 @@ class ChatItem extends S2SBaseComponent {
     `;
     const MessageText = styled.View`
       color: #faf8f9;
+      font-size: 12px;
     `;
     const UserTimeContainer = styled.View`
       display: flex;
@@ -77,12 +78,13 @@ class ChatItem extends S2SBaseComponent {
     `;
     const UserText = styled.Text`
       color: #faf8f9;
-      font-size: 12px;
+      font-size: 10px;
+      text-transform: capitalize;
 
     `;
     const TimeText = styled.Text`
       color: #faf8f9;
-      font-size: 12px;
+      font-size: 10px;
     `;
 
     const defaultTheme = {
