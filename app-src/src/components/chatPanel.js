@@ -217,4 +217,4 @@ class ChatPanel extends S2SBaseComponent {
   }
 }
 
-export default withTheme(ChatPanel);
+export default ChatPanel;
