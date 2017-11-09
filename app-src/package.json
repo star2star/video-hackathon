@@ -76,7 +76,7 @@
     "form-data": "^2.1.4",
     "immutable": "^4.0.0-rc.1",
     "md5": "^2.1.0",
-    "moment": "^2.14.1",
+    "moment": "^2.19.1",
     "object-merge": "^2.5.1",
     "opentok-accelerator-core": "*",
     "opentok-solutions-css": "*",

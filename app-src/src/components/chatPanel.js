@@ -127,6 +127,7 @@ class ChatPanel extends S2SBaseComponent {
       `,
       messageLisViewStyles: styled.View`
         display: ${this.state.isDisplayed && this.state.isDisplayed === true ? 'flex' : 'none'}; // NOTE: This ternerary is here to prevent the "Chat" text from being visible while Chat is collapsed.
+        margin: 20px;
       `,
     };
     return styles[styleName];

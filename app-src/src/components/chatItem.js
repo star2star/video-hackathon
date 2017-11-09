@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
 import styled from 'styled-components/native';
 //import { withTheme } from 'styled-components';
 import List from './list'
+import moment from 'moment';
 
 /*
 NOTES:
@@ -39,14 +40,26 @@ class ChatItem extends S2SBaseComponent {
       `,
       messageContainerStyles: styled.View`
         align-items: flex-end;
-        //background-color: #2b8a3e;
         background-color: ${this.props.isMe && this.props.isMe === true ? '#862e9c' : '#2b8a3e'};
         border-radius: 4px;
         display: flex;
         flex-direction: column;
-        margin: 10px;
+        margin: ${this.props.isMe && this.props.isMe === true ? '10px 0px 10px 10px' : '10px 10px 10px 0px'};
         padding: 10px;
+        position: relative;
         width: 80%
+      `,
+      messageTriangleStyles: styled.View`
+        position: absolute;
+        border-top: 8px solid transparent;
+        border-bottom: 8px solid transparent;
+        border-left: ${this.props.isMe && this.props.isMe === true ? '12px solid #862e9c' : '12px solid #2b8a3e'};
+        left: ${this.props.isMe && this.props.isMe === true ? '168px' : '-12px'};
+        top: 50px;
+        transform: ${this.props.isMe && this.props.isMe === true ? 'rotate(0deg)' : 'rotate(180deg)'};
+        width: 0;
+        height: 0;
+
       `,
       messageTextStyles: styled.View`
         color: #faf8f9;
@@ -73,6 +86,7 @@ class ChatItem extends S2SBaseComponent {
 
     const ContainerView = this.getStyle('containerStyles');
     const MessageContainer = this.getStyle('messageContainerStyles');
+    const MessageTriangle = this.getStyle('messageTriangleStyles');
     const MessageText = this.getStyle('messageTextStyles');
     const UserTimeContainer = this.getStyle('userTimeContainer');
     const UserText = this.getStyle('userTextStyles');
@@ -90,10 +104,19 @@ class ChatItem extends S2SBaseComponent {
           <MessageContainer>
             <MessageText>{this.props.message}</MessageText>
             <UserTimeContainer>
-            <UserText>{this.props.user.firstname}</UserText>
-            <TimeText> freaking timestamp</TimeText>
+              <UserText>
+                {this.props.user.firstname}
+                &nbsp;
+              </UserText>
+              <TimeText>
+                {moment(this.props.timestamp).format('LLL')}
+              </TimeText>
             </UserTimeContainer>
+            <MessageTriangle>
+              &nbsp;
+            </MessageTriangle>
           </MessageContainer>
+
         </ContainerView>
     );
   }
