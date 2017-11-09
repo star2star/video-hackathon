@@ -124,7 +124,13 @@ class AppMain extends S2SBaseComponent {
                 showLabel
                 showCompanion = {false}
             />
-            <ChatPanel isDisplayed={this.state.chatPanelOpen} />
+            <ChatPanel
+              cbClosePanel={()=>{
+                this.setState((prevState)=>{
+                  return {...prevState, chatPanelOpen : false }
+                })
+              }}
+              isDisplayed={this.state.chatPanelOpen} />
           </View>
         </View>
       );

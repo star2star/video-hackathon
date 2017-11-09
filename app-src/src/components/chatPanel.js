@@ -63,7 +63,6 @@ class ChatPanel extends S2SBaseComponent {
 
     this.springValue = new Animated.Value(0);
     this.spring = this.spring.bind(this);
-    this.closePanel = this.closePanel.bind(this);
   }
 
   static propTypes = {
@@ -98,42 +97,11 @@ class ChatPanel extends S2SBaseComponent {
   handleDismissClick() {}
 
   getDefaultStyle(styleName) {
-    const styles = {
-      containerStyles: styled.View`
-        background-color: #faf8f9;
-        display: flex;
-        flex-direction: column;
-        width: 30%;
-      `,
-      chatPanelHeaderStyles: styled.View`
-        align-items: center;
-        background-color: #1878c7;
-        color: #faf8f9;
-        display: ${this.state.isDisplayed && this.state.isDisplayed === true ? 'flex' : 'none'}; // NOTE: This ternerary is here to prevent the "Chat" text from being visible while Chat is collapsed.
-        flex-direction: row;
-        height: 5%;
-        justify-content: space-between;
-      `,
-      chatPanelTextStyles: styled.Text`
-        display: flex;
-        flex: 5;
-        justify-content: center;
-      `,
-
-      // TODO We can't override styles
-      chatPanelButtonStyles: styled.Button`
-        align-items: center;
-        justify-content: center;
-      `,
-      messageLisViewStyles: styled.View`
-        display: ${this.state.isDisplayed && this.state.isDisplayed === true ? 'flex' : 'none'}; // NOTE: This ternerary is here to prevent the "Chat" text from being visible while Chat is collapsed.
-        margin: 20px;
-      `,
-    };
+    const styles = {};
     return styles[styleName];
   }
 
-  spring() {
+  spring(doClose) {
     // Default Configs: isDisplayed true // show chatPanel is open/opening
     this.springValue.setValue(1);
     let animationConfigs = {
@@ -143,7 +111,7 @@ class ChatPanel extends S2SBaseComponent {
     }
 
     // isDisplayed false // chatPanel is closed or closing
-    if(this.state.isDisplayed === false) {
+    if(doClose || this.state.isDisplayed === false) {
       this.springValue.setValue(250);
 
       animationConfigs = {
@@ -174,27 +142,36 @@ class ChatPanel extends S2SBaseComponent {
     })
   }
 
-  closePanel(){
-    // TODO make close
-
-    this.setState((prevState)=>{
-      return {...prevState, isDisplayed : false }
-    });
-
-  }
-
   render(){
 
-    const ContainerView = this.getStyle('containerStyles');
-    const ChatPanelHeader = this.getStyle('chatPanelHeaderStyles');
-    const ChatPanelText = this.getStyle('chatPanelTextStyles');
-    const MessageListView = this.getStyle('messageLisViewStyles');
-    const ChatPanelButton = this.getStyle('chatPanelButtonStyles');
-
-    const defaultTheme = {
-      headerContainerBackgroundColor: '#005496',
-      headerTextColor: '#faf8f9'
-    }
+    const ContainerView = styled.View`
+      background-color: #faf8f9;
+      display: flex;
+      flex-direction: column;
+      width: 30%;
+    `;
+    const ChatPanelHeader = styled.View`
+      align-items: center;
+      background-color: #1878c7;
+      color: #faf8f9;
+      display: ${this.state.isDisplayed && this.state.isDisplayed === true ? 'flex' : 'none'}; // NOTE: This ternerary is here to prevent the "Chat" text from being visible while Chat is collapsed.
+      flex-direction: row;
+      height: 5%;
+      justify-content: space-between;
+    `;
+    const ChatPanelText = styled.Text`
+      display: flex;
+      flex: 5;
+      justify-content: center;
+    `;
+    const MessageListView = styled.View`
+      display: ${this.state.isDisplayed && this.state.isDisplayed === true ? 'flex' : 'none'}; // NOTE: This ternerary is here to prevent the "Chat" text from being visible while Chat is collapsed.
+      margin: 20px;
+    `;
+    const ChatPanelButton = styled.Button`
+      align-items: center;
+      justify-content: center;
+    `;
 
     const AnimatedView = Animated.createAnimatedComponent(ContainerView);
     //console.log('ChatPanel props:',this.props)
@@ -207,7 +184,10 @@ class ChatPanel extends S2SBaseComponent {
             </ChatPanelText>
             <Button
               buttonLabel="X"
-              cbOnButtonClick={this.closePanel}
+              cbOnButtonClick={this.props.cbClosePanel}
+              buttonCompanion = ''
+              showLabel
+              showCompanion = {false}
             />
           </ChatPanelHeader>
           <MessageListView>

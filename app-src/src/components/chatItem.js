@@ -30,67 +30,60 @@ class ChatItem extends S2SBaseComponent {
   }
 
   getDefaultStyle(styleName) {
-    const styles = {
-      containerStyles: styled.View`
-        align-items: ${this.props.isMe && this.props.isMe === true ? 'flex-end' : 'flex-start'};
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        width: 100%;
-      `,
-      messageContainerStyles: styled.View`
-        align-items: flex-end;
-        background-color: ${this.props.isMe && this.props.isMe === true ? '#862e9c' : '#2b8a3e'};
-        border-radius: 4px;
-        display: flex;
-        flex-direction: column;
-        margin: ${this.props.isMe && this.props.isMe === true ? '10px 0px 10px 10px' : '10px 10px 10px 0px'};
-        padding: 10px;
-        position: relative;
-        width: 80%
-      `,
-      messageTriangleStyles: styled.View`
-        position: absolute;
-        border-top: 8px solid transparent;
-        border-bottom: 8px solid transparent;
-        border-left: ${this.props.isMe && this.props.isMe === true ? '12px solid #862e9c' : '12px solid #2b8a3e'};
-        left: ${this.props.isMe && this.props.isMe === true ? '168px' : '-12px'};
-        top: 50px;
-        transform: ${this.props.isMe && this.props.isMe === true ? 'rotate(0deg)' : 'rotate(180deg)'};
-        width: 0;
-        height: 0;
-
-      `,
-      messageTextStyles: styled.View`
-        color: #faf8f9;
-      `,
-      userTimeContainer: styled.View`
-        display: flex;
-        flex-direction: row;
-        margin-top: 10px;
-      `,
-      userTextStyles: styled.Text`
-        color: #faf8f9;
-        font-size: 12px;
-
-      `,
-      timeTextStyles: styled.Text`
-        color: #faf8f9;
-        font-size: 12px;
-      `,
-    };
+    const styles = {};
     return styles[styleName];
   }
 
   render(){
 
-    const ContainerView = this.getStyle('containerStyles');
-    const MessageContainer = this.getStyle('messageContainerStyles');
-    const MessageTriangle = this.getStyle('messageTriangleStyles');
-    const MessageText = this.getStyle('messageTextStyles');
-    const UserTimeContainer = this.getStyle('userTimeContainer');
-    const UserText = this.getStyle('userTextStyles');
-    const TimeText = this.getStyle('timeTextStyles');
+    const ContainerView = styled.View`
+      align-items: ${this.props.isMe && this.props.isMe === true ? 'flex-end' : 'flex-start'};
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      //width: 100%;
+      width: 230px;
+    `;
+    const MessageContainer = styled.View`
+      align-items: flex-end;
+      background-color: ${this.props.isMe && this.props.isMe === true ? '#862e9c' : '#2b8a3e'};
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      margin: ${this.props.isMe && this.props.isMe === true ? '10px 0px 10px 10px' : '10px 10px 10px 0px'};
+      padding: 10px;
+      position: relative;
+      width: 80%
+    `;
+    const MessageTriangle = styled.View`
+      position: absolute;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: ${this.props.isMe && this.props.isMe === true ? '12px solid #862e9c' : '12px solid #2b8a3e'};
+      left: ${this.props.isMe && this.props.isMe === true ? '184px' : '-12px'};
+      top: 50px;
+      transform: ${this.props.isMe && this.props.isMe === true ? 'rotate(0deg)' : 'rotate(180deg)'};
+      width: 0;
+      height: 0;
+
+    `;
+    const MessageText = styled.View`
+      color: #faf8f9;
+    `;
+    const UserTimeContainer = styled.View`
+      display: flex;
+      flex-direction: row;
+      margin-top: 10px;
+    `;
+    const UserText = styled.Text`
+      color: #faf8f9;
+      font-size: 12px;
+
+    `;
+    const TimeText = styled.Text`
+      color: #faf8f9;
+      font-size: 12px;
+    `;
 
     const defaultTheme = {
       headerContainerBackgroundColor: '#005496',

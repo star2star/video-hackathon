@@ -35,17 +35,11 @@ class Header extends S2SBaseComponent {
 
   }
 
-  componentDidMount() {
+  componentDidMount() {}
 
-  }
+  componentWillUnmount() {}
 
-  componentWillUnmount() {
-
-  }
-
-  handleDismissClick() {
-
-  }
+  handleDismissClick() {}
 
   toggleSettings() {
     this.props.cbToggleSettings();
@@ -53,45 +47,30 @@ class Header extends S2SBaseComponent {
 
 
   getDefaultStyle(styleName) {
-    const styles = {
-      headerContainerStyles: styled.View`
-        align-items: center;
-        background-color: ${props => props.theme.headerContainerBackgroundColor};;
-        display: flex;
-        flex-direction: row;
-        height: 50px;
-        justify-content: flex-end;
-        width: 100%;
-        padding-left: 10px;
-        padding-right: 10px;
-      `,
-      headerTextStyles: styled.View`
-        align-items: center;
-        color: ${props => props.theme.headerTextColor};
-        display: flex;
-        flex: 5
-        justify-content: center;
-      `,
-      menuButton: {
-        buttonContainerStyles: {
-          backgroundColor: 'red'
-        },
-        buttonContainerHoverStyles: {
-          backgroundColor: 'pink'
-        },
-        buttonViewStyles: {},
-        buttonTextStyles: {},
-        displayNoneStyles: {},
-      },
-
-    };
+    const styles = {};
     return styles[styleName];
   }
 
   render(){
 
-    const HeaderContainerView = this.getStyle('headerContainerStyles');
-    const HeaderText = this.getStyle('headerTextStyles');
+    const HeaderContainerView = styled.View`
+      align-items: center;
+      background-color: ${props => props.theme.headerContainerBackgroundColor};;
+      display: flex;
+      flex-direction: row;
+      height: 50px;
+      justify-content: flex-end;
+      width: 100%;
+      padding-left: 10px;
+      padding-right: 10px;
+    `;
+    const HeaderText = styled.View`
+      align-items: center;
+      color: ${props => props.theme.headerTextColor};
+      display: flex;
+      flex: 5
+      justify-content: center;
+    `;
 
     const defaultTheme = {
       headerContainerBackgroundColor: '#005496',
