@@ -15,29 +15,35 @@ import ComponentUtilities from '../js/componentUtilities';
 import styled from 'styled-components/native';
 
 
-const propTypes = {
-  cbOnButtonClick: React.PropTypes.func,
-  compStyle: React.PropTypes.object,
-  buttonLabel: React.PropTypes.string,
-  buttonCompanion: React.PropTypes.string,
-  showLabel: React.PropTypes.bool,
-  showCompanion: React.PropTypes.bool,
-  toolTipPosition: React.PropTypes.string
-};
 
-const defaultProps = {
-  cbOnButtonClick: ()=>{console.log('BUTTON CLICKED');},
-  buttonLabel: 'Button Example',
-  buttonCompanion: '',
-  showLabel: true,
-  showCompanion: true,
-  toolTipPosition: 'right'
-};
 
 //react natives style sheet
 // const styles = StyleSheet.create({
 //
 // });
+
+const ButtonContainerStyles = styled.TouchableOpacity`
+  background-color: '#005496'
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 8px;
+  border-radius: 4px;
+  position: relative;
+`;
+
+const ButtonContainerHoverStyles = styled.TouchableOpacity`
+  background-color: #00213c;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 8px;
+  border-radius: 4px;
+`;
 
 class Button extends S2SBaseComponent {
   constructor(props){
@@ -57,54 +63,24 @@ class Button extends S2SBaseComponent {
 
   componentWillUnmount() {}
 
-  getDefaultStyle(styleName) {
-    const styles = {
-      buttonContainerStyles: styled.TouchableOpacity`
-        background-color: ${
-          this.props.compStyle && this.props.compStyle.buttonContainerStyles.backgroundColor ?
-          this.props.compStyle.buttonContainerStyles.backgroundColor :
-          '#005496'
-        };
-        height: 40px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        padding: 0px 8px;
-        border-radius: 4px;
-        position: relative;
-      `,
-      buttonContainerHoverStyles: styled.TouchableOpacity`
-        background-color: #00213c;
-        height: 40px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        padding: 0px 8px;
-        border-radius: 4px;
-      `,
-      buttonViewStyles: styled.View`
-        width: 100%;
-        height: 48px;
-        background-color: #f8f9fa
-      `,
-      buttonTextStyles: styled.Text`
-        font-size: 16px;
-        font-weight: 600;
-        line-height: 1;
-        text-align: center;
-        color: #f8f9fa;
-      `,
-      displayNoneStyles: styled.View`
-        display: none;
-      `,
-      displayToolTipStyles: styled.View`
+  static propTypes = {
+    cbOnButtonClick: React.PropTypes.func,
+    compStyle: React.PropTypes.object,
+    buttonLabel: React.PropTypes.string,
+    buttonCompanion: React.PropTypes.string,
+    showLabel: React.PropTypes.bool,
+    showCompanion: React.PropTypes.bool,
+    toolTipPosition: React.PropTypes.string
+  };
 
-      `,
-    };
-    return styles[styleName];
-  }
+  static defaultProps = {
+    cbOnButtonClick: ()=>{console.log('BUTTON CLICKED');},
+    buttonLabel: 'Button Example',
+    buttonCompanion: '',
+    showLabel: true,
+    showCompanion: true,
+    toolTipPosition: 'right'
+  };
 
   setHoverTrue(){
     ComponentUtilities.hoverUtility(this, true, {hoverActive: true});
@@ -115,16 +91,66 @@ class Button extends S2SBaseComponent {
   }
 
   render(){
-    const setButtonViewStyle = this.props.showCompanion ? 'buttonViewStyles' : 'displayNoneStyles';
-    const setButtonTextStyle = this.props.showLabel ? 'buttonTextStyles' : 'displayNoneStyles';
-    const setButtonHoverTextStyle = this.props.showLabel ? 'buttonTextStyles' : 'displayToolTipStyles';
 
-    const setButtonTextHover = this.state.hoverActive ? setButtonHoverTextStyle : setButtonTextStyle;
-    const setButtonContainerHover = this.state.hoverActive ? 'buttonContainerHoverStyles' : 'buttonContainerStyles';
+    console.log("this.ButtonContainerStyles",ButtonContainerStyles)
 
-    const ButtonContainerView = this.getDefaultStyle(setButtonContainerHover);
-    const ButtonView = this.getDefaultStyle(setButtonViewStyle);
-    const ButtonText = this.getDefaultStyle(setButtonTextHover);
+
+    // Defining different component style objects
+    // const ButtonContainerStyles = styled.TouchableOpacity`
+    //   background-color: '#005496'
+    //   height: 40px;
+    //   display: flex;
+    //   flex-direction: row;
+    //   align-items: center;
+    //   justify-content: center;
+    //   padding: 0px 8px;
+    //   border-radius: 4px;
+    //   position: relative;
+    // `;
+
+    // const ButtonContainerHoverStyles = styled.TouchableOpacity`
+    //   background-color: #00213c;
+    //   height: 40px;
+    //   display: flex;
+    //   flex-direction: row;
+    //   align-items: center;
+    //   justify-content: center;
+    //   padding: 0px 8px;
+    //   border-radius: 4px;
+    // `;
+
+    const ButtonViewStyles = styled.View`
+      width: 100%;
+      height: 48px;
+      background-color: #f8f9fa
+    `
+
+    const ButtonTextStyles = styled.Text`
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1;
+      text-align: center;
+      color: #f8f9fa;
+    `;
+
+    const DisplayNoneStyles = styled.View`
+      display: none;
+    `;
+
+    const DisplayToolTipStyles = styled.View`
+
+    `;
+
+    const SetButtonViewStyle = this.props.showCompanion ? ButtonViewStyles : DisplayNoneStyles;
+    const SetButtonTextStyle = this.props.showLabel ? ButtonTextStyles : DisplayNoneStyles;
+    const SetButtonHoverTextStyle = this.props.showLabel ? ButtonTextStyles : DisplayToolTipStyles;
+
+    const SetButtonTextHover = this.state.hoverActive ? SetButtonHoverTextStyle : SetButtonTextStyle;
+    const SetButtonContainerHover = this.state.hoverActive ? ButtonContainerHoverStyles : ButtonContainerStyles;
+
+    const ButtonContainerView = SetButtonContainerHover;
+    const ButtonView = SetButtonViewStyle;
+    const ButtonText = SetButtonTextHover;
 
     //buttonCompanionItem needs to return an svg but that isn't supported
     return(
@@ -147,4 +173,6 @@ class Button extends S2SBaseComponent {
   }
 }
 
+Button.ButtonContainerStyles = ButtonContainerStyles;
+Button.ButtonContainerHoverStyles = ButtonContainerHoverStyles
 export default Button;

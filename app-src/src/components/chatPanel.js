@@ -2,7 +2,7 @@ import React from 'react';
 import S2SBaseComponent from 's2s-base-class';
 import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
 import styled from 'styled-components/native';
-import { withTheme } from 'styled-components';
+import { withTheme, extend } from 'styled-components';
 import List from './list'
 import ChatItem from './chatItem';
 import Button from './button';
@@ -46,12 +46,6 @@ const chatProps = [
     isMe: false
   }
 ]
-
-const defaultProps = {
-  cbToggleSettings : ()=>{ console.log('Please define a callback function for cbToggleSettings. Thanks.'); },
-  chatList : chatProps,
-  isDisplayed : false
-};
 
 class ChatPanel extends S2SBaseComponent {
   constructor(props){
@@ -168,27 +162,41 @@ class ChatPanel extends S2SBaseComponent {
       display: ${this.state.isDisplayed && this.state.isDisplayed === true ? 'flex' : 'none'}; // NOTE: This ternerary is here to prevent the "Chat" text from being visible while Chat is collapsed.
       margin: 20px;
     `;
-    const ChatPanelButton = styled.Button`
-      align-items: center;
-      justify-content: center;
+
+    const DefaultButton = ({ className, children }) => (
+    	<Button
+        className={className} // defining className so styles are passed down per documentation (web)?
+        style={className} // defining styles are passed down per documentation (react-native)
+        buttonLabel="X"
+        cbOnButtonClick={this.props.cbClosePanel}
+        buttonCompanion = ''
+        showLabel
+        showCompanion = {false}
+      />
+    );
+
+    //NOTE: MY STYLES STILL ARENT WORKING // Using .extend since we KNOW that button is an styled-components component
+    const ChatPanelButton = styled(Button.ButtonContainerStyles)`
+      border: 3px solid red;
     `;
 
     const AnimatedView = Animated.createAnimatedComponent(ContainerView);
-    //console.log('ChatPanel props:',this.props)
 
     return(
-        <AnimatedView style={{  width: this.springValue}} >
+        <AnimatedView style={{ width: this.springValue }} >
           <ChatPanelHeader  className="HeaderContainer" >
             <ChatPanelText>
               Chat
             </ChatPanelText>
-            <Button
-              buttonLabel="X"
-              cbOnButtonClick={this.props.cbClosePanel}
-              buttonCompanion = ''
-              showLabel
-              showCompanion = {false}
-            />
+            <ChatPanelButton
+            // 
+            // className={className} // defining className so styles are passed down per documentation (web)?
+            // style={className} // defining styles are passed down per documentation (react-native)
+            buttonLabel="X"
+            cbOnButtonClick={this.props.cbClosePanel}
+            buttonCompanion = ''
+            showLabel
+            showCompanion = {false}/>
           </ChatPanelHeader>
           <MessageListView>
             {this.createMessageList()}

@@ -81,7 +81,7 @@ class Header extends S2SBaseComponent {
       <ThemeProvider theme={defaultTheme}>
         <HeaderContainerView  className="HeaderContainer" >
           <HeaderText className="HeaderText">
-            Video Hackathon
+            Video Hackathon 📹 🔥
           </HeaderText>
           <Button
             className="buttonContainerStyles"
