@@ -14,37 +14,6 @@ import {
 import ComponentUtilities from '../js/componentUtilities';
 import styled from 'styled-components/native';
 
-
-
-
-//react natives style sheet
-// const styles = StyleSheet.create({
-//
-// });
-
-const ButtonContainerStyles = styled.TouchableOpacity`
-  background-color: '#005496'
-  height: 40px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding: 0px 8px;
-  border-radius: 4px;
-  position: relative;
-`;
-
-const ButtonContainerHoverStyles = styled.TouchableOpacity`
-  background-color: #00213c;
-  height: 40px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding: 0px 8px;
-  border-radius: 4px;
-`;
-
 class Button extends S2SBaseComponent {
   constructor(props){
     super(props);
@@ -64,8 +33,9 @@ class Button extends S2SBaseComponent {
   componentWillUnmount() {}
 
   static propTypes = {
+    backgroundColor: React.PropTypes.string,
+    hoverBackgroundColor: React.PropTypes.string,
     cbOnButtonClick: React.PropTypes.func,
-    compStyle: React.PropTypes.object,
     buttonLabel: React.PropTypes.string,
     buttonCompanion: React.PropTypes.string,
     showLabel: React.PropTypes.bool,
@@ -74,6 +44,8 @@ class Button extends S2SBaseComponent {
   };
 
   static defaultProps = {
+    // backgroundColor: '#005496',
+    // hoverBackgroundColor: '#1878c7',
     cbOnButtonClick: ()=>{console.log('BUTTON CLICKED');},
     buttonLabel: 'Button Example',
     buttonCompanion: '',
@@ -92,32 +64,38 @@ class Button extends S2SBaseComponent {
 
   render(){
 
-    console.log("this.ButtonContainerStyles",ButtonContainerStyles)
-
-
     // Defining different component style objects
-    // const ButtonContainerStyles = styled.TouchableOpacity`
-    //   background-color: '#005496'
-    //   height: 40px;
-    //   display: flex;
-    //   flex-direction: row;
-    //   align-items: center;
-    //   justify-content: center;
-    //   padding: 0px 8px;
-    //   border-radius: 4px;
-    //   position: relative;
-    // `;
+    const ButtonContainerStyles = styled.TouchableOpacity`
+      background-color: #1878c7;
+      height: 40px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      padding: 0px 8px;
+      border-radius: 4px;
+      position: relative;
 
-    // const ButtonContainerHoverStyles = styled.TouchableOpacity`
-    //   background-color: #00213c;
-    //   height: 40px;
-    //   display: flex;
-    //   flex-direction: row;
-    //   align-items: center;
-    //   justify-content: center;
-    //   padding: 0px 8px;
-    //   border-radius: 4px;
-    // `;
+      // TODO: How to update styles so that child styles are also overridable?
+      // TouchableOpacity:not(:first-child) {
+      //   font-size: 16px;
+      //   font-weight: 600;
+      //   line-height: 1;
+      //   text-align: center;
+      //   color: blue;
+      // }
+    `;
+
+    const ButtonContainerHoverStyles = styled.TouchableOpacity`
+      background-color: #43a2f0;
+      height: 40px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      padding: 0px 8px;
+      border-radius: 4px;
+    `;
 
     const ButtonViewStyles = styled.View`
       width: 100%;
@@ -155,7 +133,7 @@ class Button extends S2SBaseComponent {
     //buttonCompanionItem needs to return an svg but that isn't supported
     return(
         <ButtonContainerView
-            className="buttonContainer"
+            style={this.props.style}
             accessibilityComponentType = 'button'
             accessibilityLabel = {this.props.buttonLabel}
             accessible
@@ -164,15 +142,19 @@ class Button extends S2SBaseComponent {
             onMouseLeave = {this.setHoverFalse}
             ref = {(elm) => this.ButtonElement = elm}
           >
-          <ButtonView className="buttonCompanionItem"/>
-          <ButtonText className="buttonText">
+          <ButtonView
+            className="buttonCompanionItem"
+            style={this.props.style}
+          />
+          <Text
+            //className="buttonText"
+            //style={this.props.style}
+          >
             {this.props.buttonLabel}
-          </ButtonText>
+          </Text>
         </ButtonContainerView>
       );
   }
 }
 
-Button.ButtonContainerStyles = ButtonContainerStyles;
-Button.ButtonContainerHoverStyles = ButtonContainerHoverStyles
 export default Button;

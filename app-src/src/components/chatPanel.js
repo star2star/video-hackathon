@@ -1,15 +1,15 @@
 import React from 'react';
 import S2SBaseComponent from 's2s-base-class';
-import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
+import { View, Text, StyleSheet, Animated, Easing, TouchableOpacity, button} from 'react-native';
 import styled from 'styled-components/native';
-import { withTheme, extend } from 'styled-components';
+import { withTheme, extend, css } from 'styled-components';
 import List from './list'
 import ChatItem from './chatItem';
 import Button from './button';
+import SimpleButton from './simpleButton'; // Only here to demonstrate how to override styles with styled-components.
 
 /*
 NOTES:
-- s2s-base-class getCompStyle/getStyle is not working fully could be due to styled-components being strings and react styles being objects
 - TODO theming
 */
 
@@ -163,22 +163,54 @@ class ChatPanel extends S2SBaseComponent {
       margin: 20px;
     `;
 
-    const DefaultButton = ({ className, children }) => (
-    	<Button
-        className={className} // defining className so styles are passed down per documentation (web)?
-        style={className} // defining styles are passed down per documentation (react-native)
-        buttonLabel="X"
+    // Here, I am trying to prove that I can style a simple component (component styles are basic)
+    const DefaultSimpleButton = ({ style, children }) => (
+      <SimpleButton
+        style={style} // Passing down the magic override className to SimpleButton
+        buttonLabel="Close"
         cbOnButtonClick={this.props.cbClosePanel}
         buttonCompanion = ''
         showLabel
         showCompanion = {false}
-      />
+      >
+        {children}
+      </SimpleButton>
+
     );
 
-    //NOTE: MY STYLES STILL ARENT WORKING // Using .extend since we KNOW that button is an styled-components component
-    const ChatPanelButton = styled(Button.ButtonContainerStyles)`
-      border: 3px solid red;
-    `;
+    const StyledSimpleButton = styled(DefaultSimpleButton)`
+      background-color: red;
+    `
+
+    const DefaultButton = ({ style, children }) => {
+
+      console.log('style', style, children)
+      return (
+        <Button
+          style={style} // defining styles are passed down per documentation (react-native)
+          buttonLabel="X"
+          cbOnButtonClick={this.props.cbClosePanel}
+          buttonCompanion = ''
+          showLabel
+          showCompanion = {false}
+        >
+          {children}
+        </Button>
+      )
+    };
+
+    const StyledIntenseButton = styled(DefaultButton)`
+      background-color: red;
+      border: 5px solid purple;
+      padding: 5px;
+
+      :nth-child(1) : {
+        background-color: blue;
+      }
+
+    `
+
+
 
     const AnimatedView = Animated.createAnimatedComponent(ContainerView);
 
@@ -188,15 +220,8 @@ class ChatPanel extends S2SBaseComponent {
             <ChatPanelText>
               Chat
             </ChatPanelText>
-            <ChatPanelButton
-            // 
-            // className={className} // defining className so styles are passed down per documentation (web)?
-            // style={className} // defining styles are passed down per documentation (react-native)
-            buttonLabel="X"
-            cbOnButtonClick={this.props.cbClosePanel}
-            buttonCompanion = ''
-            showLabel
-            showCompanion = {false}/>
+            <StyledIntenseButton />
+            <StyledSimpleButton/>
           </ChatPanelHeader>
           <MessageListView>
             {this.createMessageList()}
