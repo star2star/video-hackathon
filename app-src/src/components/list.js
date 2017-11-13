@@ -9,9 +9,7 @@ import {
   Text,
   Image,
   TextInput,
-  ScrollView,
-  FlatList,
-  SectionList
+  ScrollView
 } from 'react-native';
 import ComponentUtilities from '../js/componentUtilities';
 import styled from 'styled-components/native';
@@ -21,7 +19,7 @@ const propTypes = {
   compStyle: React.PropTypes.object,
   hasSections: React.PropTypes.bool,
   listData: React.PropTypes.object,
-  listItem: React.PropTypes.object,
+  listItem: React.PropTypes.any,
   renderSectionHeader: React.PropTypes.object,
   sections: React.PropTypes.object
 };
@@ -75,29 +73,47 @@ class List extends S2SBaseComponent {
   }
 
   renderItem(listData){
-    //console.log('RENDERITEM ARG', listData)
-
     return listData.map((listItem)=>{
       return this.props.listItem(listItem);
     });
   }
 
+  renderFlatList(listData){
+    return (
+      <ScrollView>
+        {
+          this.renderItem(listData)
+        }
+      </ScrollView>
+    );
+  }
+
+  renderSectionList(){
+    return (
+      <ScrollView>
+        {
+          this.props.sections.map((section)=>{
+            return (
+              <View>
+                {this.props.renderSectionHeader(section.sectionHeader)}
+                {this.renderItem(section.data)}
+              </View>
+            );
+          })
+        }
+      </ScrollView>
+    );
+  }
+
   render(){
     const ListContainerView = this.getDefaultStyle('listContainerStyles');
-    const StyledFlatList = this.getDefaultStyle('flatListStyle');
-    const StyledSectionList = this.getDefaultStyle('sectionListStyle');
 
-    const ListToDisplay = this.props.hasSections ? 'SectionList' : 'FlatList';
+    const ListToDisplay = this.props.hasSections ? this.renderSectionList() : this.renderFlatList(this.props.listData);
 
     //buttonCompanionItem needs to return an svg but that isn't supported
     return(
       <ListContainerView>
-        <ListToDisplay
-            data = {this.props.listData}
-            renderItem = {this.renderItem(this.props.listData)}
-            renderSectionHeader = {this.props.renderSectionHeader}
-            sections = {this.props.sections}
-        />
+        {ListToDisplay}
       </ListContainerView>
     );
   }
