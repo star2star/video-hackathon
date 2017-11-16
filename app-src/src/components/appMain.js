@@ -32,7 +32,8 @@ class AppMain extends S2SBaseComponent {
   constructor(props){
     super(props);
     this.state = {
-      chatPanelOpen : false
+      chatPanelOpen : false,
+      settingsOpen : false
     };
     this.displayName = 'AppMain';
 
@@ -96,8 +97,11 @@ class AppMain extends S2SBaseComponent {
         >
           <Header
             cbToggleSettings={()=>{
-              console.log('Temporary cbFunction to cbToggleSettings in AppMain.js');
+              this.setState((prevState)=>{
+                return {...prevState, settingsOpen : !this.state.settingsOpen };
+              });
             }}
+            settingsOpen={this.state.settingsOpen}
           />
           <View className="AppMainBody" style={styles.bodyStyle}>
             <View>

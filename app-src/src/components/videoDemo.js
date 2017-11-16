@@ -4,7 +4,7 @@
 import React from 'react';
 import S2SBaseComponent from 's2s-base-class';
 import { View, Text, StyleSheet } from 'react-native';
-
+import { fromJS } from "immutable";
 import { OpenTokSDK } from 'opentok-accelerator-core';
 
 const credentials = {
@@ -17,11 +17,16 @@ const callProperties = {
   insertMode: 'append',
   width: '100%',
   height: '100%',
-  showControls: false,
-  style: {
-    buttonDisplayMode: 'off'
-  }
+  showControls: false
 };
+
+const subscribeProperties = {
+  insertMode: 'append',
+  width: '100px',
+  height: '100px',
+  showControls: false
+};
+
 
 const otSDK = new OpenTokSDK(credentials);
 
@@ -59,6 +64,10 @@ class VideoTest extends S2SBaseComponent {
 
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return !fromJS(nextProps).equals(fromJS(this.props)) || !fromJS(nextState).equals(fromJS(this.state));
+  }
+
   componentDidMount() {
     const session = otSDK.session;
     otSDK.connect().then(() => this.setState({ session, connected: true }));
@@ -77,9 +86,10 @@ class VideoTest extends S2SBaseComponent {
     const subscribeToStream = stream => {
       if (streamMap && streamMap[stream.id]) { return; }
       const type = stream.videoType;
-      otSDK.subscribe(stream, `${type}SubscriberContainer`, callProperties)
+      otSDK.subscribe(stream, `screenSubscriberContainer`, subscribeProperties)
       .then(() => this.setState(otSDK.state()));
     };
+
 
     // Subscribe to initial streams
     session.streams.forEach(subscribeToStream);
@@ -112,9 +122,13 @@ class VideoTest extends S2SBaseComponent {
 
 
   render(){
+    //console.log('>>>>',this.state);
     return(
       <View style={{ "height": "100%", "width":"100%"}}>
         <View  style={{ "height": "100%", "width":"100%"}} id="cameraPublisherContainer">
+
+        </View>
+        <View style={{"flexDirection": "row"}} id="screenSubscriberContainer">
 
         </View>
         <View style={{"color":"yellow"}} onClick={this.startCall}>

@@ -3,18 +3,33 @@ import S2SBaseComponent from 's2s-base-class';
 import { View, Text, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import { ThemeProvider } from 'styled-components';
-import Button from './button'
+import Button from './button';
+import Settings from './settings';
 
-/*
-NOTES:
-- Using react-native Button component until button ready.
-- React-Native button is basically uncustomizeable style-wise.
-- s2s-base-class getCompStyle/getStyle is not working fully could be due to styled-components being strings and react styles being objects
-- TODO theming
-*/
+const styles = StyleSheet.create({
+  HeaderText: {
+    alignItems: 'center',
+    color: 'white',
+    display: 'flex',
+    flex: '5',
+    justifyContent: 'center'
+  },
+  HeaderContainer: {
+    alignItems: 'center',
+    backgroundColor: '#0C5592',
+    display: 'flex',
+    flexDirection:  'row',
+    height: '50px',
+    justifyContent: 'flex-end',
+    width: '100%',
+    paddingLeft: '10px',
+    paddingRight: '10px'
+  }
+});
 
 const propTypes = {
-  cbToggleSettings : React.PropTypes.func
+  cbToggleSettings : React.PropTypes.func,
+  settingsOpen :   React.PropTypes.bool
 };
 
 const defaultProps = {
@@ -28,7 +43,8 @@ const defaultProps = {
 class Header extends S2SBaseComponent {
   constructor(props){
     super(props);
-    this.state = {};
+    this.state = {
+    };
     this.displayName = 'Header';
 
     this.toggleSettings = this.toggleSettings.bind(this);
@@ -42,8 +58,10 @@ class Header extends S2SBaseComponent {
   handleDismissClick() {}
 
   toggleSettings() {
+
     this.props.cbToggleSettings();
   }
+
 
 
   getDefaultStyle(styleName) {
@@ -52,37 +70,13 @@ class Header extends S2SBaseComponent {
   }
 
   render(){
-
-    const HeaderContainerView = styled.View`
-      align-items: center;
-      background-color: ${props => props.theme.headerContainerBackgroundColor};;
-      display: flex;
-      flex-direction: row;
-      height: 50px;
-      justify-content: flex-end;
-      width: 100%;
-      padding-left: 10px;
-      padding-right: 10px;
-    `;
-    const HeaderText = styled.View`
-      align-items: center;
-      color: ${props => props.theme.headerTextColor};
-      display: flex;
-      flex: 5
-      justify-content: center;
-    `;
-
-    const defaultTheme = {
-      headerContainerBackgroundColor: '#005496',
-      headerTextColor: '#faf8f9'
-    }
-
+    console.log(">>>", this.state.settingsOpen)
     return(
-      <ThemeProvider theme={defaultTheme}>
-        <HeaderContainerView  className="HeaderContainer" >
-          <HeaderText className="HeaderText">
+        <View  className="HeaderContainer" style={styles.HeaderContainer} >
+          <View className="HeaderText" style={styles.HeaderText}>
             Video Hackathon 📹 🔥
-          </HeaderText>
+          </View>
+          <View>
           <Button
             className="buttonContainerStyles"
             cbOnButtonClick={this.toggleSettings}
@@ -92,8 +86,11 @@ class Header extends S2SBaseComponent {
             showLabel
             showCompanion = {false}
           />
-        </HeaderContainerView>
-      </ThemeProvider>
+          </View>
+          <Settings
+            isDisplayed={this.props.settingsOpen}
+          />
+        </View>
       );
   }
 }
