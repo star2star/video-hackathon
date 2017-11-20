@@ -11,6 +11,7 @@ import {
   TextInput,
   ScrollView
 } from 'react-native';
+
 import ComponentUtilities from '../js/componentUtilities';
 import styled from 'styled-components/native';
 
@@ -134,7 +135,7 @@ class MenuListItem extends S2SBaseComponent {
     const MenuListItemView = this.getDefaultStyle(setMenuListItemCompanionDisabledStyle);
     const MenuListItemText = this.getDefaultStyle(setMenuListItemHoverTextStyle);
 
-    console.log('MENU LIST ITEM', this.props);
+    //console.log('MENU LIST ITEM', this.props);
     //menuListItemCompanionItem needs to return an svg but that isn't supported
     return(
         <MenuListItemContainerView
