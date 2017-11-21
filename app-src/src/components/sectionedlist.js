@@ -16,7 +16,6 @@ import ComponentUtilities from '../js/componentUtilities';
 
 const propTypes = {
   compStyle: React.PropTypes.object,
-  listData: React.PropTypes.object,
   listItem: React.PropTypes.any,
   renderSectionHeader: React.PropTypes.object,
   sections: React.PropTypes.array
@@ -38,7 +37,6 @@ const propTypes = {
 */
 
 const defaultProps = {
-  listData: {},
   listItem: {},
   renderSectionHeader: {},
   sections: [
@@ -95,8 +93,6 @@ class SectionedList extends S2SBaseComponent {
       return this.props.listItem(listItem);
     });
   }
-
-
 
   render(){
     //buttonCompanionItem needs to return an svg but that isn't supported
