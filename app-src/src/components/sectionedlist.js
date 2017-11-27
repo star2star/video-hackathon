@@ -2,6 +2,8 @@
 // TODO - styling with styled-components (for native), import and use s2s-components
 //    i.e. import Button from 's2s-button/native'
 
+//TODO - make working example in chat list
+
 import React from 'react';
 import S2SBaseComponent from 's2s-base-class';
 import {
@@ -9,7 +11,8 @@ import {
   Text,
   Image,
   TextInput,
-  ScrollView
+  ScrollView,
+  StyleSheet
 } from 'react-native';
 import ComponentUtilities from '../js/componentUtilities';
 
@@ -48,9 +51,24 @@ const defaultProps = {
 };
 
 //react natives style sheet
-// const styles = StyleSheet.create({
-//
-// });
+const styles = StyleSheet.create({
+  listContainerStyles: {
+    backgroundColor: '#f8f9fa',
+    height: '100%',
+    width: '48px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '0px',
+    borderRight: '#dee2e6',
+  },
+  sectionListStyle: {},
+  flatListStyle: {
+    listContainerStyles: {},
+    flatListStyle: {}
+  },
+});
 
 class SectionedList extends S2SBaseComponent {
   constructor(props){
@@ -66,27 +84,6 @@ class SectionedList extends S2SBaseComponent {
 
   componentWillUnmount() {}
 
-  getDefaultStyle(styleName) {
-    const styles = {
-      listContainerStyles: {
-        backgroundColor: '#f8f9fa',
-        height: '100%',
-        width: '48px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '0px',
-        borderRight: '#dee2e6',
-      },
-      sectionListStyle: {},
-      flatListStyle: {
-        listContainerStyles: {},
-        flatListStyle: {}
-      },
-    };
-    return styles[styleName];
-  }
 
   renderItem(listData){
     return listData.map((listItem)=>{
@@ -95,14 +92,13 @@ class SectionedList extends S2SBaseComponent {
   }
 
   render(){
-    //buttonCompanionItem needs to return an svg but that isn't supported
     return(
-      <View>
-        <ScrollView>
+      <View style = {styles.listContainerStyles}>
+        <ScrollView style = {styles.sectionListStyle}>
           {
             this.props.sections.map((section)=>{
               return (
-                <View>
+                <View style = {styles.flatListStyle}>
                   {this.props.renderSectionHeader(section.sectionHeader)}
                   {this.renderItem(section.data)}
                 </View>

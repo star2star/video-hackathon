@@ -3,7 +3,7 @@ import S2SBaseComponent from 's2s-base-class';
 import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
 import styled from 'styled-components/native';
 //import { withTheme } from 'styled-components';
-import List from './list'
+import FlatList from './flatList'
 import moment from 'moment';
 
 /*

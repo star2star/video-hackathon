@@ -3,10 +3,11 @@ import S2SBaseComponent from 's2s-base-class';
 import { View, Text, StyleSheet, Animated, Easing, TouchableOpacity, button} from 'react-native';
 import styled from 'styled-components/native';
 import { withTheme, extend, css } from 'styled-components';
-import List from './list'
+import FlatList from './flatList'
 import ChatItem from './chatItem';
 import Button from './button';
 import SimpleButton from './simpleButton'; // Only here to demonstrate how to override styles with styled-components.
+import moment from 'moment';
 
 /*
 NOTES:
@@ -124,6 +125,27 @@ class ChatPanel extends S2SBaseComponent {
   }
 
   createMessageList(){
+    let dateList= [];
+    this.props.chatList.forEach((message)=>{
+      const datecheck = dateList.filter((date)=>{
+         return date === moment(message.timestamp).format('MMMM DD, YYYY')
+       }).length
+       if(datecheck === 0){
+         dateList.push(moment(message.timestamp).format('MMMM DD, YYYY'))
+       }
+       const sectionedDateList = dateList.map((date)=>{
+         return {
+           sectionHeader: date,
+           data: message
+         }
+         // {
+         //   sectionHeader: {Component to be rendered as header},
+         //   data: [],
+         // }
+       })
+       console.log(sectionedDateList)
+    })
+    console.log('CHAT LIST', this.props.chatList, dateList)
     return this.props.chatList && this.props.chatList.map((message)=>{
       return (
         <ChatItem

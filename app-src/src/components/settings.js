@@ -3,7 +3,7 @@ import S2SBaseComponent from 's2s-base-class';
 import { View, Text, StyleSheet, Animated, Easing, TouchableOpacity, button} from 'react-native';
 import styled from 'styled-components/native';
 import { withTheme, extend, css } from 'styled-components';
-import List from './list'
+import FlatList from './flatList'
 /*
 NOTES:
 - TODO theming

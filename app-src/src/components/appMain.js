@@ -1,10 +1,10 @@
 import React from 'react';
 import S2SBaseComponent from 's2s-base-class';
-import { View, Text, StyleSheet,FlatList } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { ThemeProvider } from 'styled-components';
 import MenuListItem from './menuListItem';
 import Header from './header';
-import List from './list';
+import FlatList from './flatList';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -105,7 +105,7 @@ class AppMain extends S2SBaseComponent {
           />
           <View className="AppMainBody" style={styles.bodyStyle}>
             <View>
-              <List
+              <FlatList
                   compStyle = {{}}
                   listData = {this.menuButtonArray()}
                   listItem = {(item)=>{
