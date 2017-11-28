@@ -55,12 +55,12 @@ const styles = StyleSheet.create({
   listContainerStyles: {
     backgroundColor: '#f8f9fa',
     height: '100%',
-    width: '48px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     padding: '0px',
+    margin: '0px',
     borderRight: '#dee2e6',
   },
   sectionListStyle: {},

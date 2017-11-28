@@ -3,7 +3,7 @@ import S2SBaseComponent from 's2s-base-class';
 import { View, Text, StyleSheet, Animated, Easing, TouchableOpacity, button} from 'react-native';
 import styled from 'styled-components/native';
 import { withTheme, extend, css } from 'styled-components';
-import FlatList from './flatList'
+import SectionedList from './sectionedList'
 import ChatItem from './chatItem';
 import Button from './button';
 import SimpleButton from './simpleButton'; // Only here to demonstrate how to override styles with styled-components.
@@ -46,7 +46,7 @@ const chatProps = [
     timestamp: Date.now(),
     isMe: false
   }
-]
+];
 
 class ChatPanel extends S2SBaseComponent {
   constructor(props){
@@ -58,6 +58,8 @@ class ChatPanel extends S2SBaseComponent {
 
     this.springValue = new Animated.Value(0);
     this.spring = this.spring.bind(this);
+    this.configureChatItem = this.configureChatItem.bind(this);
+    this.configureSectionHeader = this.configureSectionHeader.bind(this);
   }
 
   static propTypes = {
@@ -81,7 +83,7 @@ class ChatPanel extends S2SBaseComponent {
 
   componentDidMount() {}
 
-  componentDidUpdate(prevProps,prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if(prevProps.isDisplayed !== this.props.isDisplayed) {
       this.spring();
     }
@@ -103,7 +105,7 @@ class ChatPanel extends S2SBaseComponent {
       toValue: 250,
       friction: 5,
       tension: 1
-    }
+    };
 
     // isDisplayed false // chatPanel is closed or closing
     if(doClose || this.state.isDisplayed === false) {
@@ -113,7 +115,7 @@ class ChatPanel extends S2SBaseComponent {
         toValue: 0,
         friction: 5,
         tension: 1
-      }
+      };
     }
 
     // Performing animation with updated configurations
@@ -125,37 +127,67 @@ class ChatPanel extends S2SBaseComponent {
   }
 
   createMessageList(){
-    let dateList= [];
-    this.props.chatList.forEach((message)=>{
-      const datecheck = dateList.filter((date)=>{
-         return date === moment(message.timestamp).format('MMMM DD, YYYY')
-       }).length
-       if(datecheck === 0){
-         dateList.push(moment(message.timestamp).format('MMMM DD, YYYY'))
+    //This sets the variable defaults for the variables we will use in this function
+    let dateList = [];
+    let sectionData = [];
+
+    //This sets the configureation for the above variables
+    this.props.chatList && this.props.chatList.forEach((message)=>{
+      //this sets the current date string we are evaluating
+      const dateString = moment(message.timestamp).format('MMMM DD, YYYY');
+      //this checks the date list and determins how many instances of the
+      //date we are evaluating exist.
+      const dateCheck = dateList.filter((date)=>{
+         return date === dateString;
+       }).length;
+       //if there are no instances of the date we are evaluating then
+       //the date will be added to the date list and an object will
+       //be added to to the sectionData array to allow it to be updated
+       if(dateCheck === 0){
+         dateList.push(dateString);
+         sectionData.push({
+           sectionHeader: dateString,
+           data: []
+         });
        }
-       const sectionedDateList = dateList.map((date)=>{
-         return {
-           sectionHeader: date,
-           data: message
-         }
-         // {
-         //   sectionHeader: {Component to be rendered as header},
-         //   data: [],
-         // }
-       })
-       console.log(sectionedDateList)
-    })
-    console.log('CHAT LIST', this.props.chatList, dateList)
-    return this.props.chatList && this.props.chatList.map((message)=>{
+       // this runs through the date list and section list verifies the
+       // date matches and then pushes matchimg messages to the sub array
+       return dateList.map((date, index)=>{
+         if (date === sectionData[index].sectionHeader)
+         return sectionData[index].data.push(message);
+       });
+    });
+
+
+    console.log('CHAT LIST', this.props.chatList, dateList, sectionData);
       return (
-        <ChatItem
+        <SectionedList
+            listItem = {this.configureChatItem}
+            renderSectionHeader = {this.configureSectionHeader}
+            sections = {sectionData}
+        />
+      );
+  }
+
+  configureSectionHeader(header){
+    return (
+      <View>
+        <Text>
+          {header}
+        </Text>
+      </View>
+    );
+  }
+
+  configureChatItem(message){
+    return (
+      <ChatItem
           user={message.user}
           timestamp={message.timestamp}
           isMe={message.isMe}
           message={message.message}
-        />
-      )
-    })
+      />
+    );
   }
 
   render(){
@@ -182,7 +214,8 @@ class ChatPanel extends S2SBaseComponent {
     `;
     const MessageListView = styled.View`
       display: ${this.state.isDisplayed && this.state.isDisplayed === true ? 'flex' : 'none'}; // NOTE: This ternerary is here to prevent the "Chat" text from being visible while Chat is collapsed.
-      margin: 20px;
+      margin: 20px 0px;
+      width: 100%
     `;
 
     // Here, I am trying to prove that I can style a simple component (component styles are basic)
