@@ -10,6 +10,7 @@ import { injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 import ChatPanel from './chatPanel';
 import Button from './button';
+import Select from './select'
 
 const styles = StyleSheet.create({
   myComponentContainerStyles: {
@@ -116,6 +117,10 @@ class AppMain extends S2SBaseComponent {
             </View>
             <Text>
               TODO Import child components
+            </Text>
+            <Text>
+              UPDATING SELECT HERE
+              <Select/>
             </Text>
             <Button
                 buttonLabel="Temporary Button to Toggle Chat"
