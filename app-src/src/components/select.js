@@ -1,6 +1,7 @@
 //TODO max height needs to be added to flat list based off of the itemsVistable props
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import S2SBaseComponent from 's2s-base-class';
 import {
   View,
@@ -211,7 +212,7 @@ class Select extends S2SBaseComponent {
     const divOnMouseDown = ()=>{this.selectItem(itemIndex);};
     const divOnMouseOver = ()=>{this.onItemHover(itemIndex);};
     const divOnMouseLeave = ()=>{this.onMouseOut(itemIndex);}
-    const divOnKeyDown = (e)=>{this.handleKeyDownDropDownItem(e, index);};
+    const divOnKeyDown = (e)=>{this.handleKeyDownDropDownItem(e, itemIndex);};
 
     const itemStyle = this.state.itemHovered === itemIndex ? [styles.selectItem, styles.hoverSelectItem] : styles.selectItem;
     return (
@@ -221,7 +222,8 @@ class Select extends S2SBaseComponent {
       onMouseOver = {divOnMouseOver}
       onMouseLeave={divOnMouseLeave}
       onKeyDown={divOnKeyDown}
-      style={itemStyle}>
+      style={itemStyle}
+      ref ={'item'+itemIndex}>
         {item}
       </View>
     );
@@ -257,7 +259,7 @@ class Select extends S2SBaseComponent {
     return selectContainerStyle;
   }
 
-  handleKeyDownSelect(e){
+  handleKeyDownSelect(e, index){
     //TODO MODIFY CODE AND BEHAVIOR FOR DOWN ARROW KEY PRESS SEE S2S-SELECT
     switch (e.keyCode){
       case 32: // enter
@@ -265,6 +267,16 @@ class Select extends S2SBaseComponent {
         break;
       case 13: // spacebar
         this.toggleSelect();
+        break;
+      case 40: // down arrow
+        this.toggleSelect();
+
+        e.preventDefault();
+        console.log (this.refs['item0']);
+        //the down arrow needs to be pressed twice to successfuly move focus to the item in the list
+        ReactDOM.findDOMNode(this.refs['item0']).focus();
+        this.setState({ ...this.state, isOpen: true}); //this is to combat the quickness of the onblur function causeing the component to close
+
         break;
     }
   }
@@ -277,12 +289,31 @@ class Select extends S2SBaseComponent {
       case 13: // spacebar
         this.selectItem(index);
         break;
+      case 40: // down arrow
+        if(ReactDOM.findDOMNode(this.refs['item'+index]).nextSibling){
+          //The preventDefault() method cancels the event if it is cancelable // cancelling onBlurToggle
+          e.preventDefault();
+          // findDOMNode finds dom with specific ref.
+          // nextSibling returns the next item
+          // focus gives focus to that next item
+          ReactDOM.findDOMNode(this.refs['item'+index]).nextSibling.focus();
+          this.setState({ ...this.state, isOpen: true}); //this is to combat the quickness of the onblur function causeing the component to close
+        }
+        break;
+
+      case 38: // up arrow
+        if(ReactDOM.findDOMNode(this.refs['item'+index]).previousSibling){
+          e.preventDefault();
+          ReactDOM.findDOMNode(this.refs['item'+index]).previousSibling.focus();
+          this.setState({ ...this.state, isOpen: true}); //this is to combat the quickness of the onblur function causeing the component to close
+        }
+        break;
     }
   }
 
   render(){
     const dynamicSVG = this.state.isOpen ? '💩' : '👽'; //SVGS are not currently ready
-    console.log("????",this.refs);
+
     return(
       <Text
       style={styles.containerStyle}
