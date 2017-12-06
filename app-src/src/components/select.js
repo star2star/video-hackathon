@@ -1,18 +1,13 @@
-//TODO max height needs to be added to flat list based off of the itemsVistable props
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import S2SBaseComponent from 's2s-base-class';
 import {
   View,
   Text,
-  Image,
-  TextInput,
   ScrollView,
   StyleSheet
 } from 'react-native';
-import ComponentUtilities from '../js/componentUtilities';
-import FlatList from './flatList';
+
 
 //react natives style sheet
 const styles = StyleSheet.create({
@@ -35,7 +30,6 @@ const styles = StyleSheet.create({
     paddingRight: '5px',
     paddingBottom: '5px',
     paddingLeft: '5px',
-    //width: '100%',
     justifyContent: 'space-between',
     outline: 'none',
     width: '100%'
@@ -50,7 +44,7 @@ const styles = StyleSheet.create({
     borderTop: '1px solid #adb5bd',
     borderLeft: '1px solid #adb5bd',
     borderRight:  '1px solid #adb5bd',
-    borderBottom:  '1px solid #adb5bd',
+    borderBottom:  '1px solid #adb5bd'
   },
   focusSelectStyle: {
     borderTop: '1px solid #228ae6',
@@ -96,7 +90,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: '5px',
     paddingRight: '5px',
-    borderRight: '#dee2e6',
+    borderRight: '#dee2e6'
   },
   listStyle: {
     width: '100%'
@@ -137,7 +131,7 @@ class Select extends S2SBaseComponent {
 
     this.selectItem = this.selectItem.bind(this);
     this.toggleSelect = this.toggleSelect.bind(this);
-    this.itemToRender = this.itemToRender.bind(this);
+    this.renderSelectItem = this.renderSelectItem.bind(this);
     this.onMouseOut = this.onMouseOut.bind(this);
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.getSelectStyle = this.getSelectStyle.bind(this);
@@ -191,37 +185,38 @@ class Select extends S2SBaseComponent {
 
   onBlurToggle(){
     if (this.state.isOpen){
-      this.setState({ ...this.state, isOpen: !this.state.isOpen});
+      this.setState(()=>{
+        return { ...this.state, isOpen: !this.state.isOpen};
+      });
     }
   }
 
   onItemHover(item) {
     if(!this.state.hover){
-      this.setState({ ...this.state, itemHovered:item, hover: true});
+      this.setState(()=>{
+        return { ...this.state, itemHovered:item, hover: true};
+      });
     }
   }
 
   renderItems(items){
     return items.map((item)=>{
-      return this.itemToRender(item);
+      return this.renderSelectItem(item);
     });
   }
 
-  itemToRender(item){
+  renderSelectItem(item){
     const itemIndex = this.props.selectData.indexOf(item);
-    const divOnMouseDown = ()=>{this.selectItem(itemIndex);};
-    const divOnMouseOver = ()=>{this.onItemHover(itemIndex);};
-    const divOnMouseLeave = ()=>{this.onMouseOut(itemIndex);}
-    const divOnKeyDown = (e)=>{this.handleKeyDownDropDownItem(e, itemIndex);};
-
     const itemStyle = this.state.itemHovered === itemIndex ? [styles.selectItem, styles.hoverSelectItem] : styles.selectItem;
+
+
     return (
       <View
       accessible
-      onMouseDown={divOnMouseDown}
-      onMouseOver = {divOnMouseOver}
-      onMouseLeave={divOnMouseLeave}
-      onKeyDown={divOnKeyDown}
+      onMouseDown={()=>{this.selectItem(itemIndex);}}
+      onMouseOver = {()=>{this.onItemHover(itemIndex);}}
+      onMouseLeave={()=>{this.onMouseOut(itemIndex);}}
+      onKeyDown={(e)=>{this.handleKeyDownDropDownItem(e, itemIndex);}}
       style={itemStyle}
       ref ={'item'+itemIndex}>
         {item}
@@ -259,7 +254,7 @@ class Select extends S2SBaseComponent {
     return selectContainerStyle;
   }
 
-  handleKeyDownSelect(e, index){
+  handleKeyDownSelect(e){
     //TODO MODIFY CODE AND BEHAVIOR FOR DOWN ARROW KEY PRESS SEE S2S-SELECT
     switch (e.keyCode){
       case 32: // enter
@@ -275,7 +270,9 @@ class Select extends S2SBaseComponent {
         console.log (this.refs['item0']);
         //the down arrow needs to be pressed twice to successfuly move focus to the item in the list
         ReactDOM.findDOMNode(this.refs['item0']).focus();
-        this.setState({ ...this.state, isOpen: true}); //this is to combat the quickness of the onblur function causeing the component to close
+        this.setState(()=>{
+          return { ...this.state, isOpen: true};
+        }); //this is to combat the quickness of the onblur function causeing the component to close
 
         break;
     }
@@ -297,7 +294,9 @@ class Select extends S2SBaseComponent {
           // nextSibling returns the next item
           // focus gives focus to that next item
           ReactDOM.findDOMNode(this.refs['item'+index]).nextSibling.focus();
-          this.setState({ ...this.state, isOpen: true}); //this is to combat the quickness of the onblur function causeing the component to close
+          this.setState(()=>{
+            return { ...this.state, isOpen: true};
+          }); //this is to combat the quickness of the onblur function causeing the component to close
         }
         break;
 
@@ -305,7 +304,9 @@ class Select extends S2SBaseComponent {
         if(ReactDOM.findDOMNode(this.refs['item'+index]).previousSibling){
           e.preventDefault();
           ReactDOM.findDOMNode(this.refs['item'+index]).previousSibling.focus();
-          this.setState({ ...this.state, isOpen: true}); //this is to combat the quickness of the onblur function causeing the component to close
+          this.setState(()=>{
+            return { ...this.state, isOpen: true};
+          }); //this is to combat the quickness of the onblur function causeing the component to close
         }
         break;
     }
@@ -315,10 +316,10 @@ class Select extends S2SBaseComponent {
     const dynamicSVG = this.state.isOpen ? '💩' : '👽'; //SVGS are not currently ready
 
     return(
-      <Text
+      <View
       style={styles.containerStyle}
       onBlur={this.onBlurToggle}>
-        <Text
+        <View
         accessible
         style={this.getSelectStyle()}
         className="selectArea"
@@ -336,15 +337,15 @@ class Select extends S2SBaseComponent {
               {dynamicSVG}
             </Text>
           </Text>
-        </Text>
-        <Text style={[styles.dropDownStyle, {display: this.state.isOpen ? 'flex' : 'none', maxHeight: 36 * this.props.itemsVisible}]}>
+        </View>
+        <View style={[styles.dropDownStyle, {display: this.state.isOpen ? 'flex' : 'none', maxHeight: 36 * this.props.itemsVisible}]}>
           <View style = {styles.listContainerStyles} >
             <ScrollView style = {styles.listStyle} >
               {this.renderItems(this.props.selectData)}
             </ScrollView>
           </View>
-        </Text>
-      </Text>
+        </View>
+      </View>
     );
   }
 }
